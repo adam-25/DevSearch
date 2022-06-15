@@ -1,0 +1,28 @@
+<!-- To load favicon -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Page title -->
+	<title>DevSearch</title>
+	<link rel="shortcut icon" href="{% static 'Favicon/titleIcon.png' %}" size="15">
+</head>
+
+<body>
+	<!-- Getting Navbar -->
+	{% include "../Layout/Navbar/navbar.html" %}
+
+	<!-- Block where other html file can be used. -->
+	{% block content %}
+	{% endblock content %}
+
+	<!-- Getting Footer on the page -->
+	{% include "../Layout/Footer/footer.html" %}
+
+</body>
+
+</html>

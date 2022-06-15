@@ -1,0 +1,9 @@
+{% extends "../Main/main.html" %}
+
+{% block content %}
+	<h1>{{specific_project.project_title}}</h1>
+	<p>{{specific_project.project_description}}</p>
+	{% for tag in specific_project.project_skill_tag.all %}
+		<h1>{{tag}}</h1>
+	{% endfor %}
+{% endblock content %}
