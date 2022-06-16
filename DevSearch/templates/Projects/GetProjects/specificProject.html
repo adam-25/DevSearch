@@ -1,4 +1,4 @@
-{% extends "../Main/main.html" %}
+{% extends "../../Main/main.html" %}
 
 {% block content %}
 	<h1>{{specific_project.project_title}}</h1>
@@ -6,4 +6,6 @@
 	{% for tag in specific_project.project_skill_tag.all %}
 		<h1>{{tag}}</h1>
 	{% endfor %}
+	<a href="{% url 'update_project' specific_project.id %}">Update Project</a>
+	<a href="{% url 'delete_project' specific_project.id %}">Delete Project</a>
 {% endblock content %}

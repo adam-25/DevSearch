@@ -7,10 +7,10 @@ import uuid
 # Project Model.
 class ProjectsModel(models.Model):
 	project_title = models.CharField(max_length=100)
-	project_description = models.TextField(null=True, blank=True)
+	project_description = models.TextField()
 	project_demo = models.CharField(max_length=1000, null=True, blank=True)
 	source_code = models.CharField(max_length=1000, null=True, blank=True)
-	project_skills = models.ManyToManyField('SkillTagsModel', blank=True)
+	project_skills = models.ManyToManyField('SkillTagsModel')
 	total_votes = models.IntegerField(default=0, null=True, blank=True)
 	vote_ratio = models.IntegerField(default=0, null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
