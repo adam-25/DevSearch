@@ -1,6 +1,8 @@
 {% extends "../../Main/main.html" %}
+{% load static %}
 
 {% block content %}
+	<img src="{{specific_project.project_image.url}}" alt="Project Image">
 	<h1>{{specific_project.project_title}}</h1>
 	<p>{{specific_project.project_description}}</p>
 	{% for tag in specific_project.project_skill_tag.all %}
