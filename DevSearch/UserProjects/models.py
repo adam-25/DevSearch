@@ -8,12 +8,12 @@ from Users.models import *
 
 # Project Model.
 class ProjectsModel(models.Model):
-	project_owner = models.ForeignKey(UserProfileModel, on_delete=models.CASCADE)
+	project_owner = models.ForeignKey(UserProfileModel, on_delete=models.CASCADE, null=True)
 	project_title = models.CharField(max_length=100)
 	project_description = models.TextField()
 	project_demo = models.CharField(max_length=1000, null=True, blank=True)
 	source_code = models.CharField(max_length=1000, null=True, blank=True)
-	project_skills = models.ManyToManyField('SkillTagsModel')
+	project_skills = models.ManyToManyField('ProjectSkillTagsModel')
 	project_image = models.ImageField(upload_to='Images/Project/' ,null=True, blank=True, default='Images/Project/default.jpg')
 	total_votes = models.IntegerField(default=0, null=True, blank=True)
 	vote_ratio = models.IntegerField(default=0, null=True, blank=True)
@@ -24,7 +24,7 @@ class ProjectsModel(models.Model):
 		return self.project_title
 
 # Review Model to store the reviews of the project.
-class ReviewModel(models.Model):
+class ProjectReviewModel(models.Model):
 	VOTE = (
 		('up', 'Up Vote'),
 		('down', 'Down Vote'),
@@ -40,7 +40,7 @@ class ReviewModel(models.Model):
 		return self.value
 
 # Skill Tag Model which consist of skills that are used in the project.
-class SkillTagsModel(models.Model):
+class ProjectSkillTagsModel(models.Model):
 	skill_name = models.CharField(max_length=200)
 	created_at = models.DateTimeField(auto_now_add=True)
 	id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, unique=True)
