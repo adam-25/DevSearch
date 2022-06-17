@@ -3,10 +3,12 @@ from email.policy import default
 from django.db import models
 import uuid
 
+from Users.models import *
 # Create your models here.
 
 # Project Model.
 class ProjectsModel(models.Model):
+	project_owner = models.ForeignKey(UserProfileModel, on_delete=models.CASCADE)
 	project_title = models.CharField(max_length=100)
 	project_description = models.TextField()
 	project_demo = models.CharField(max_length=1000, null=True, blank=True)
