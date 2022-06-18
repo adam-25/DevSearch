@@ -12,4 +12,7 @@ def allUsers(request):
 def user_profile(request, user_id):
 	user = UserProfileModel.objects.get(id=user_id)
 	projects = ProjectsModel.objects.filter(project_owner=user_id)
-	return render(request, 'Users/UserProfile/userProfile.html', {'user': user, 'projects': projects})
+	topSkills = user.skills.exclude(description__exact=None)
+	otherSkills = user.skills.filter(description=None)
+	
+	return render(request, 'Users/UserProfile/userProfile.html', {'user': user, 'projects': projects, 'topSkills': topSkills, 'otherSkills': otherSkills})

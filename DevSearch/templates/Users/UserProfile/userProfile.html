@@ -58,26 +58,26 @@
 					</p>
 				</div>
 				<div class="devInfo">
-					<h3 class="devInfo__title">Skills</h3>
+					{% if topSkills %}
+						<h3 class="devInfo__title">Skills</h3>
+					{% endif %}
 					<div class="devInfo__skills">
-						{% for skill in user.skills.all %}
-						{% if skill.description != None and skill.description != '' %}
+						{% for skill in topSkills %}
 						<div class="devSkill">
 							<h4 class="devSkill__title">{{skill}}</h4>
 							<p class="devSkill__info">
 								{{skill.description}}
 							</p>
 						</div>
-						{% endif %}
 						{% endfor %}
+						{% if otherSkills %}
 						<h3 class="devInfo__subtitle">Other Skills</h3>
+						{% endif %}
 						<div class="devInfo__otherSkills">
-							{% for skill in user.skills.all %}
-							{% if skill.description == None or skill.description == '' %}
+							{% for skill in otherSkills %}
 							<span class="tag tag--pill tag--sub tag--lg">
 								<small>{{skill}}</small>
 							</span>
-							{% endif %}
 							{% endfor %}
 						</div>
 					</div>
@@ -94,7 +94,8 @@
 										alt="{{project.project_title}}" />
 									<div class="card__body">
 										<h3 class="project__title">{{project.project_title}}</h3>
-										<p><a class="project__author" href="{% url 'user_profile' user.id %}">By {{project.project_owner}}</a></p>
+										<p><a class="project__author" href="{% url 'user_profile' user.id %}">By
+												{{project.project_owner}}</a></p>
 										<p class="project--rating">
 											<span style="font-weight: bold;">{{project.vote_ratio}}%</span> Postitive
 											Feedback ({{project.total_votes}} {% if project.total_votes == 0 or project.total_votes == 1 %} Vote{% else %} Votes{% endif %})
