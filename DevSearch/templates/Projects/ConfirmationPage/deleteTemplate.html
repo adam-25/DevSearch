@@ -1,12 +1,18 @@
+<!-- Page to take the delete confirmation. -->
+
+<!-- Extending main template. -->
 {% extends '../../Main/main.html' %}
 
+<!-- Writing html in block content -->
 {% block content %}
 
 	<h1>Are you sure?</h1>
-	<h5>You want to delete {{obj}}...</h5>
+	<!-- Sent obj from views. -->
+	<h5>You want to delete {{project}}...</h5>
 	<form method="POST">
 		{% csrf_token %}
-		<a href="{% url 'projects' %}">Cancel</a>
+		<!-- If  -->
+		<a href="{% url 'specific_project' project.id %}">Cancel</a>
 		<input type="submit" value="Delete">
 	</form>
 

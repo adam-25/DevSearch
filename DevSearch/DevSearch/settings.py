@@ -108,6 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# STATIC FILES ARE IN static folder.
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'static'),
 ]
@@ -130,6 +131,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# User uploaded media files are in Images folder.
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/Images/'
 

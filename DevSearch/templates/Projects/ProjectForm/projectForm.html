@@ -1,3 +1,4 @@
+<!-- Extends main.html file -->
 {% extends "../../Main/main.html" %}
 
 {% block content %}
@@ -12,10 +13,12 @@
 			<form method="POST" enctype="multipart/form-data" class="form">
 				<h2>Create New Project</h2>
 				{% csrf_token %}
-				<!-- Input:Text -->
+				<!-- Loop through the form and render input tag of the form. -->
 				{% for item in form %}
 				<div class="form__field">
+					<!-- Label of each input tag -->
 					<label for="formInput#text">{{item.label}}</label>
+					<!-- Input field -->
 					{{item}}
 				</div>
 				{% endfor %}

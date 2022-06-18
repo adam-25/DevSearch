@@ -1,8 +1,10 @@
+<!-- Loading files in STATICFILES_DIR folder -->
 {% load static %}
 
 <header class="header">
 	<div class="container container--narrow">
 		<a href="/" class="header__logo">
+			<!-- NavBar title logo -->
 			<img src="{% static 'Images/Logo/WebLogo.png' %}" alt="DevSearch Logo" style="padding-top: 10px; height: 5rem; width: 8rem;" />
 		</a>
 		<nav class="header__nav">
@@ -12,11 +14,20 @@
 				<div class="toggle-menu__lines"></div>
 			</label>
 			<ul class="header__menu">
+				<!-- Home Route -->
 				<li class="header__menuItem"><a href="/">Developers</a></li>
+				<!-- Route to url named 'projects' in views -->
 				<li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
 				<li class="header__menuItem"><a href="">Inbox</a></li>
 				<li class="header__menuItem"><a href="">My Account</a></li>
-				<li class="header__menuItem"><a href="" class="btn btn--sub">Login/Sign Up</a></li>
+				<!-- Checking if current user is logged in or not. -->
+				{% if request.user.is_authenticated %}
+				<!-- If user is logged in then show Logout button and redirect to url named user_logout in views. -->
+				<li class="header__menuItem"><a href="{% url 'user_logout' %}" class="btn btn--sub">Logout</a></li>
+				{% else %}
+				<!-- If user is not logged in then show Login button and redirect to url named user_login_register in views. -->
+				<li class="header__menuItem"><a href="{% url 'user_login_register' %}" class="btn btn--sub">Login/Sign Up</a></li>
+				{% endif %}
 			</ul>
 		</nav>
 	</div>

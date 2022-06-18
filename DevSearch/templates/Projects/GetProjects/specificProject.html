@@ -1,3 +1,5 @@
+<!-- Render all the projects that we get from DB -->
+<!-- Main template -->
 {% extends "../../Main/main.html" %}
 {% load static %}
 
@@ -7,6 +9,7 @@
 		<div class="layout">
 			<div class="column column--1of3">
 				<h3 class="singleProject__subtitle">Tools & Stacks</h3>
+				<!-- Skills of the project -->
 				<div class="singleProject__toolStack">
 					{% for tag in specific_project.project_skills.all %}
 					<span class="tag tag--pill tag--sub tag--lg">
@@ -15,6 +18,7 @@
 					{% endfor %}
 				</div>
 				<div>
+					<!-- If there is source code of the project then create a link to redirect to source code. -->
 					{% if specific_project.source_code %}
 					<a class="singleProject__liveLink" href="{{specific_project.source_code}}" target="_blank"><i
 							class="im im-external-link"></i>Source
@@ -24,7 +28,7 @@
 				</div>
 				<br>
 				<div>
-
+					<!-- If there is link of the project demo then create a link to redirect to project demo. -->
 					{% if specific_project.project_demo %}
 					<a class="singleProject__liveLink" href="{{specific_project.project_demo}}" target="_blank"><i
 							class="im im-external-link"></i> Project Demo
@@ -33,20 +37,26 @@
 				</div>
 			</div>
 			<div class="column column--2of3">
+				<!-- Project Image -->
 				<img class="singleProject__preview" src="{{ specific_project.project_image.url }}" alt="portfolio thumbnail" />
+				<!-- redirect to the profile of project owner -->
 				<a href="{% url 'user_profile' specific_project.project_owner.id %}" class="singleProject__developer">{{specific_project.project_owner}}</a>
+				<!-- Project title -->
 				<h2 class="singleProject__title">{{specific_project.project_title}}</h2>
 				<h3 class="singleProject__subtitle">About the Project</h3>
+				<!-- Project description -->
 				<div class="singleProject__info">
 					{{specific_project.project_description}}
 				</div>
 
 				<div class="comments">
 					<h3 class="singleProject__subtitle">Feedback</h3>
+					<!-- Total positive vote ratio and total votes of the project. -->
 					<h5 class="project--rating">
 						{{specific_project.vote_ratio}}% Postitive Feedback ({{specific_project.total_votes}} {% if specific_project.total_votes == 0 or specific_project.total_votes == 1 %} Vote{% else %} Votes{% endif %})
 					</h5>
 
+					<!-- Submit Comment... -->
 					<form class="form" action="#" method="POST">
 						<!-- Textarea -->
 						<div class="form__field">

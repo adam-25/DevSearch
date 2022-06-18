@@ -1,18 +1,76 @@
-from django.shortcuts import render
+# Redirect page.
+from django.shortcuts import redirect, render
 
+# Importing login, logout, authenticate to do User authentication and authorization stuff.
+from django.contrib.auth import login, authenticate, logout
+from django.contrib import messages
+# App models and Projects app Model.
 from .models import *
 from UserProjects.models import *
 
 # Create your views here.
 
+# All the users in DB.
 def allUsers(request):
+	# Request all the users.
 	users = UserProfileModel.objects.all()
+
+	# Return allUsers template with users.
 	return render(request, 'Users/Home/allUsers.html', {'users': users})
 
+# Get specific user and render it.
 def user_profile(request, user_id):
+	# Get user from db by id.
 	user = UserProfileModel.objects.get(id=user_id)
+	# Get all the projects of the user.
 	projects = ProjectsModel.objects.filter(project_owner=user_id)
+
+	# Getting skills with the description is not None. Exclude those skills.
 	topSkills = user.skills.exclude(description__exact=None)
+	# Get other skills of user which description is None.
 	otherSkills = user.skills.filter(description=None)
 	
+	# Render html page of specific user depend on the user id.
 	return render(request, 'Users/UserProfile/userProfile.html', {'user': user, 'projects': projects, 'topSkills': topSkills, 'otherSkills': otherSkills})
+
+# Login user.
+def loginUser(request):
+
+	# Check if the user is authenticated then do not show login page and redirect it to the home page.
+	if request.user.is_authenticated:
+		return redirect('/')
+
+	# If user make a 'POST' request to login then login the user depend on the credentials.
+	if request.method == 'POST':
+		# Get username and password from the form.
+		username = request.POST['username']
+		password = request.POST['password']
+
+		# Get the user from database.
+		# If there is not user then redirect back to the login page.
+		try:
+			user = User.objects.get(username=username)
+		except:
+			messages.error(request, 'Invalid username or password.')
+			return redirect('user_login_register')
+
+		# Check username and password is correct or not..
+		user = authenticate(request, username=username, password=password)
+
+		# If user name and password is correct then login the user and redirect it to the home page.
+		# otherwise redirect back to the login page.
+		if user != None:
+			login(request, user)
+			return redirect('/')
+		else:
+			messages.error(request, 'Invalid username or password.')
+			return redirect('user_login_register')
+	
+	# If user is authenticated and didn't make a post request then show login page.
+	return render(request, 'Users/LoginRegister/loginRegister.html')
+
+# Logout user.
+def logoutUser(request):
+	# Logout user and redirect to the home page.
+	logout(request)
+	return redirect('/')
