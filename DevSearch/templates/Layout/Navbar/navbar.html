@@ -25,8 +25,8 @@
 				<!-- If user is logged in then show Logout button and redirect to url named user_logout in views. -->
 				<li class="header__menuItem"><a href="{% url 'user_logout' %}" class="btn btn--sub">Logout</a></li>
 				{% else %}
-				<!-- If user is not logged in then show Login button and redirect to url named user_login_register in views. -->
-				<li class="header__menuItem"><a href="{% url 'user_login_register' %}" class="btn btn--sub">Login/Sign Up</a></li>
+				<!-- If user is not logged in then show Login button and redirect to url named user_login in views. -->
+				<li class="header__menuItem"><a href="{% url 'user_login' %}" class="btn btn--sub">Login/Sign Up</a></li>
 				{% endif %}
 			</ul>
 		</nav>

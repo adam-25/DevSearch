@@ -8,6 +8,9 @@ from django.contrib import messages
 from .models import *
 from UserProjects.models import *
 
+# Importing SignUpForm from forms.
+from .forms import SignUpForm
+
 # Create your views here.
 
 # All the users in DB.
@@ -52,7 +55,7 @@ def loginUser(request):
 			user = User.objects.get(username=username)
 		except:
 			messages.error(request, 'Invalid username or password.')
-			return redirect('user_login_register')
+			return redirect('user_login')
 
 		# Check username and password is correct or not..
 		user = authenticate(request, username=username, password=password)
@@ -64,13 +67,44 @@ def loginUser(request):
 			return redirect('/')
 		else:
 			messages.error(request, 'Invalid username or password.')
-			return redirect('user_login_register')
+			return redirect('user_login')
 	
 	# If user is authenticated and didn't make a post request then show login page.
-	return render(request, 'Users/LoginRegister/loginRegister.html')
+	return render(request, 'Users/LoginRegister/loginRegister.html', {'login': True})
 
 # Logout user.
 def logoutUser(request):
 	# Logout user and redirect to the home page.
 	logout(request)
 	return redirect('/')
+
+# Registering User.
+def registerUser(request):
+	# If user is already logged in then they cannot access this route.
+	if request.user.is_authenticated:
+		return redirect('/')
+
+	# SignUpForm.
+	form = SignUpForm()
+
+	# If there is a post request, then User check user form is valid or not.
+	if request.method == 'POST':
+		form = SignUpForm(request.POST)
+		# If user submitted information is valid then save the form(user). 
+		# Then authenticate and login the user and redirect to home page.
+		if form.is_valid():
+			form.save()
+			user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
+			login(request, user)
+			messages.success(request, "User account has been created successfully...")
+			return redirect('/')
+		else:
+			# If there is an error in form, Display a message of an error.
+			for i in form.errors.values():
+				messages.error(request, i)
+			
+			# Redirect to registration page.
+			return redirect('user_register')
+
+	# Render an empty form for registration.
+	return render(request, 'Users/LoginRegister/loginRegister.html', {'login': False, 'form': form})

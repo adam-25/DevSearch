@@ -27,7 +27,7 @@ def specific_project(request, project_id):
 
 # Create a new Project.
 # Project creating required user to login. and redirect to login page.
-@login_required(login_url='user_login_register')
+@login_required(login_url='user_login')
 def create_project(request):
 	# Get the ProjectForm. 
 	form = ProjectForm()
@@ -47,7 +47,7 @@ def create_project(request):
 
 # Update an Existing Project.
 # Project updating required user to login. and redirect to login page.
-@login_required(login_url='user_login_register')
+@login_required(login_url='user_login')
 def update_project(request, project_id):
 	# Get the specific project from db to update depend on project_id.
 	project = ProjectsModel.objects.get(id=project_id)
@@ -68,7 +68,7 @@ def update_project(request, project_id):
 
 # Delete an Existing Project.
 # Project delete required user to login. and redirect to login page.
-@login_required(login_url='user_login_register')
+@login_required(login_url='user_login')
 def delete_project_confirmation(request, project_id):
 	# Get the specific project from db to delete depend on project_id.
 	project = ProjectsModel.objects.get(id=project_id)
