@@ -1,8 +1,10 @@
 # Redirect page.
+from pydoc import describe
 from django.shortcuts import redirect, render
 
 # Importing login, logout, authenticate to do User authentication and authorization stuff.
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 # App models and Projects app Model.
 from .models import *
@@ -22,16 +24,16 @@ def allUsers(request):
 	return render(request, 'Users/Home/allUsers.html', {'users': users})
 
 # Get specific user and render it.
-def user_profile(request, user_id):
+def userProfile(request, user_id):
 	# Get user from db by id.
 	user = UserProfileModel.objects.get(id=user_id)
 	# Get all the projects of the user.
 	projects = ProjectsModel.objects.filter(project_owner=user_id)
 
 	# Getting skills with the description is not None. Exclude those skills.
-	topSkills = user.skills.exclude(description__exact=None)
+	topSkills = user.skills.exclude(description__exact='')
 	# Get other skills of user which description is None.
-	otherSkills = user.skills.filter(description=None)
+	otherSkills = user.skills.filter(description='')
 	
 	# Render html page of specific user depend on the user id.
 	return render(request, 'Users/UserProfile/userProfile.html', {'user': user, 'projects': projects, 'topSkills': topSkills, 'otherSkills': otherSkills})
@@ -108,3 +110,20 @@ def registerUser(request):
 
 	# Render an empty form for registration.
 	return render(request, 'Users/LoginRegister/loginRegister.html', {'login': False, 'form': form})
+
+# User can view their account.
+# It required user to logged in, if user is not logged in then redirect user to the login page.
+@login_required(login_url='user_login')
+def user_account(request):
+	# Getting user profile.
+	userProfile = UserProfileModel.objects.get(user=request.user)
+
+	# Getting user projects.
+	projects = ProjectsModel.objects.filter(project_owner=userProfile)
+
+	# Skills of an user.
+	topSkills = userProfile.skills.exclude(description__exact='')
+	otherSkills = userProfile.skills.filter(description='')
+
+	# Render html page and passing users skills and projects.
+	return render(request, 'Users/UserProfile/userAccount.html', {'user': userProfile, 'topSkills': topSkills, 'projects': projects, 'otherSkills': otherSkills})
