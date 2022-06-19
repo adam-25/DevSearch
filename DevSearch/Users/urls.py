@@ -13,6 +13,7 @@ urlpatterns = [
 	path('user/logout', views.logoutUser, name='user_logout'),
 	path('user/register', views.registerUser, name='user_register'),
 
-	# User can view their account.
-	path('user/account', views.user_account, name='user_account')
+	# User can view, edit their account.
+	path('user/account', views.user_account, name='user_account'),
+	path('user/edit/profile', views.edit_account_profile, name='edit_account')
 ]

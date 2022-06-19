@@ -1,0 +1,29 @@
+{% extends '../../../Main/main.html' %}
+
+{% block content %}
+
+<form method="POST">
+
+
+
+</form>
+
+<main class="formPage my-xl">
+	<div class="content-box">
+		<div class="formWrapper">
+			<a class="backButton" href="#"><i class="im im-angle-left"></i></a>
+			<br>
+
+			<h2>Edit Account Info.</h2>
+			<form class="form" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="form__field">
+					{{ form.as_p }}
+				</div>
+				<input type="submit" class="btn btn--sub btn--lg" value="Update">
+			</form>
+		</div>
+	</div>
+</main>
+
+{% endblock %}

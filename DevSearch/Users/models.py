@@ -22,12 +22,12 @@ class UserProfileModel(models.Model):
 	# Many to many relationship with SkillsModel.
 	skills = models.ManyToManyField('SkillsModel')
 	bio = models.TextField(max_length=10000, blank=True, null=True)
-	image = models.ImageField(upload_to="User/", default="Images/User/user.png", blank=True, null=True)
-	github = models.URLField(max_length=500, blank=True, null=True)
-	linkedin = models.URLField(max_length=500, blank=True, null=True)
-	twitter = models.URLField(max_length=500, blank=True, null=True)
-	youtube = models.URLField(max_length=5000, blank=True, null=True)
-	website = models.URLField(max_length=500, blank=True, null=True)
+	image = models.ImageField(upload_to="User/", default="Images/User/user.png", blank=True)
+	github = models.CharField(max_length=500, blank=True, null=True)
+	linkedin = models.CharField(max_length=500, blank=True, null=True)
+	twitter = models.CharField(max_length=500, blank=True, null=True)
+	youtube = models.CharField(max_length=5000, blank=True, null=True)
+	website = models.CharField(max_length=500, blank=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
 

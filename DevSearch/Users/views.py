@@ -1,5 +1,4 @@
 # Redirect page.
-from pydoc import describe
 from django.shortcuts import redirect, render
 
 # Importing login, logout, authenticate to do User authentication and authorization stuff.
@@ -11,7 +10,7 @@ from .models import *
 from UserProjects.models import *
 
 # Importing SignUpForm from forms.
-from .forms import SignUpForm
+from .forms import *
 
 # Create your views here.
 
@@ -127,3 +126,52 @@ def user_account(request):
 
 	# Render html page and passing users skills and projects.
 	return render(request, 'Users/UserProfile/userAccount.html', {'user': userProfile, 'topSkills': topSkills, 'projects': projects, 'otherSkills': otherSkills})
+
+@login_required(login_url='user_login')
+def edit_account_profile(request):
+
+	profile = UserProfileModel.objects.get(user=request.user)
+
+	form = EditHeadlineForm(initial={
+		'first_name': profile.first_name,
+		'last_name': profile.last_name,
+		'username': profile.username,
+		'user_email': profile.user_email,
+		'profession': profile.profession,
+		'location': profile.location,
+		'bio': profile.bio,
+		'github': profile.github,
+		'linkedin': profile.linkedin,
+		'twitter': profile.twitter,
+		'youtube': profile.youtube,
+		'website': profile.website,
+		'image': None
+	}, instance=profile)
+
+	all_user_profile = UserProfileModel.objects.all()
+
+	usernames = []
+
+	for user in all_user_profile:
+		usernames.append(user.username)
+	
+	usernames.remove(profile.username)
+
+	if request.method == 'POST':
+		form = EditHeadlineForm(request.POST, request.FILES, instance=profile)
+
+		if request.POST['username'] in usernames:
+			messages.error(request, "Username already exists.")
+			redirect('edit_account')		
+		else:
+			if form.is_valid():
+				form.save()
+				messages.success(request, "User has been updated successfully")
+				return redirect('user_account')
+			else:
+				for field in form.errors:
+					messages.error(request, field)
+				
+				return redirect('edit_account')
+
+	return render(request, 'Users/UserProfile/EditProfile/editHeadlines.html', {'form': form})

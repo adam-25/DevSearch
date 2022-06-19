@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
+from .models import SkillsModel, UserProfileModel
+
 class SignUpForm(UserCreationForm):
 	# Creating a different fields in form.
 	username = forms.CharField()
@@ -28,3 +30,17 @@ class SignUpForm(UserCreationForm):
 	
 		for field in self.fields.values():
 			field.widget.attrs.update({'class': 'input', 'autocomplete': 'off', 'required': True})
+
+class EditHeadlineForm(forms.ModelForm):
+	skills = forms.ModelMultipleChoiceField(
+			queryset=SkillsModel.objects.all(),
+			widget=forms.CheckboxSelectMultiple,
+		)
+	class Meta:
+		model = UserProfileModel
+		fields = ('username', 'first_name', 'last_name', 'user_email', 'profession', 'bio', 'location', 'github', 'linkedin', 'twitter', 'youtube', 'website', 'skills', 'image')
+
+	def __init__(self, *args, **kwargs):
+		super(EditHeadlineForm, self).__init__(*args, **kwargs)
+		for field in self.fields.values():
+			field.widget.attrs.update({'class': 'input', 'style': 'margin-bottom: 15px'})
