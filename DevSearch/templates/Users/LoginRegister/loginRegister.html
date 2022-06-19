@@ -1,26 +1,79 @@
 {% extends '../../Main/main.html' %}
+{% load static %}
 
 {% block content %}
 
 <!-- If there is a login page then Show Login form else registration form -->
 {% if login %}
-<form method="POST">
-	{% csrf_token %}
-	username: <input type="text" name="username">
-	<br>
-	Password: <input type="password" name="password">
-	<br>
-	<button type="submit" class="btn btn-primary">Submit</button>
+<div class="auth auth_login">
+	<div class="card">
+		<div class="auth__header text-center">
+			<a href="/">
+				<img src="{% static 'Images/Logo/LoginPageLogo.png' %}" alt="icon" style="height: 5rem;" />
+			</a>
+			<h3>Account Login</h3>
+			<p>Hello Developer, Welcome Back!</p>
+		</div>
 
-	<p>Don't have an account?<a href="{% url 'user_register' %}">Sign up.</a></p>
-</form>
+		<form method="POST" class="form auth__form">
+			{% csrf_token %}
+			<!-- Input:username -->
+			<div class="form__field">
+				<label for="formInput#text">Username: </label>
+				<input class="input input--text" id="formInput#text" type="text" name="username"
+					placeholder="Enter your username..." required />
+			</div>
+
+			<!-- Input:Password -->
+			<div class="form__field">
+				<label for="formInput#password">Password: </label>
+				<input class="input input--password" id="formInput#passowrd" type="password" name="password"
+					placeholder="••••••••" required />
+			</div>
+			<div class="auth__actions">
+				<input class="btn btn--sub btn--lg" type="submit" value="Log In" />
+				<a href="forgotpassword">Forget Password?</a>
+			</div>
+		</form>
+		<div class="auth__alternative">
+			<p>Don’t have an Account?</p>
+			<a href="{% url 'user_register' %}">Sign Up</a>
+		</div>
+	</div>
+</div>
+
 {% else %}
-<form method="POST">
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type="submit" value="Submit">
-	<p>Already have an account?<a href="{% url 'user_login' %}">Log in.</a></p>
-</form>
+
+<div class="auth">
+	<div class="card">
+		<div class="auth__header text-center">
+			<a href="/">
+				<img src="{% static 'Images/Logo/LoginPageLogo.png' %}" alt="icon" style="height: 5rem;" />
+			</a>
+			<h3>Account SignUp</h3>
+			<p>Create a new developer account</p>
+		</div>
+
+		<form method="POST">
+			{% csrf_token %}
+
+			<!-- Registration django form -->
+			{% for i in form %}
+			<div class="form__field">
+				<label for="formInput#text">{{i.label}}</label>
+				{{i}}
+			</div>
+			{% endfor %}
+			<div class="auth__actions">
+				<input class="btn btn--sub btn--lg" type="submit" value="Sign  In" />
+			</div>
+		</form>
+		<div class="auth__alternative">
+			<p>Already have an Account?</p>
+			<a href="{% url 'user_login' %}">Log In</a>
+		</div>
+	</div>
+</div>
 {% endif %}
 
 {% endblock %}

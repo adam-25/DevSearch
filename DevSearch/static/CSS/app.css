@@ -42,7 +42,7 @@ img {
 }
 
 .header__logo>img {
-	height: 4rem;
+	height: 3.8rem;
 }
 
 .header__nav>ul {
@@ -645,6 +645,7 @@ img {
   Login/SignUp
 ========================*/
 
+
 .auth {
 	width: 100%;
 	position: relative;
@@ -654,6 +655,13 @@ img {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	margin-top: 15%;
+	margin-bottom: 10%;
+}
+
+.auth_login {
+	margin-top: 0%;
+	margin-bottom: 0%;
 }
 
 .auth::after {
@@ -852,20 +860,4 @@ img {
 	color: var(--color-sub);
 	margin-bottom: 1rem;
 	margin-top: 2rem;
-}
-
-input[type=file]::file-selector-button {
-	border: 1px solid rgb(228, 237, 235);
-	padding: 10px;
-	border-radius: 5px;
-	background-color: #f8fafd;
-	transition: 1s;
-	color: #6c6c6c
-}
-
-input[type=file]::file-selector-button:hover {
-	background-color: #aee3e3;
-	border: 2px solid #93c3c2;
-	color: rgb(38, 54, 52);
-	cursor: pointer;
 }

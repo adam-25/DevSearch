@@ -21,7 +21,10 @@ class SignUpForm(UserCreationForm):
 
 	# Do not show help_text of password and change label of password2 to Confirm Password.
 	def __init__(self, *args, **kwargs):
-		super().__init__(*args, **kwargs)
+		super(SignUpForm, self).__init__(*args, **kwargs)
 		self.fields['password1'].help_text = None
 		self.fields['password2'].help_text = None
 		self.fields['password2'].label = 'Confirm Password'
+	
+		for field in self.fields.values():
+			field.widget.attrs.update({'class': 'input', 'autocomplete': 'off', 'required': True})
