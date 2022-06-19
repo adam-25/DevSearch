@@ -132,7 +132,7 @@ def edit_account_profile(request):
 
 	profile = UserProfileModel.objects.get(user=request.user)
 
-	form = EditHeadlineForm(initial={
+	form = EditHeadlineForm(request.user, initial={
 		'first_name': profile.first_name,
 		'last_name': profile.last_name,
 		'username': profile.username,
