@@ -3,6 +3,8 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
+from django.contrib import messages
+
 # Importing forms and models of the project.
 from .forms import *
 from .models import *
@@ -41,7 +43,9 @@ def create_project(request):
 		if form.is_valid():
 			# If form is valid then save the form. and Project created.
 			# Redirect to all the projects page.
-			form.save()
+			project = form.save(commit=False)
+			project.owner = user_profile
+			project.save()
 			return redirect('projects')
 
 	# Otherwise render the empty form.
@@ -55,6 +59,13 @@ def update_project(request, project_id):
 	project = ProjectsModel.objects.get(id=project_id)
 
 	user_profile = UserProfileModel.objects.get(user=request.user)
+
+	if project.project_owner == user_profile:
+		pass
+	else:
+		messages.error(request, 'You are not allowed to update this project.')
+		return redirect('projects')
+	
 	# Get the ProjectForm. So, all the inputs have to be filled.
 	form = ProjectForm(user_profile, initial={
 		'project_image': None,
@@ -78,6 +89,14 @@ def update_project(request, project_id):
 def delete_project_confirmation(request, project_id):
 	# Get the specific project from db to delete depend on project_id.
 	project = ProjectsModel.objects.get(id=project_id)
+
+	user_profile = UserProfileModel.objects.get(user=request.user)
+
+	if project.project_owner == user_profile:
+		pass
+	else:
+		messages.error(request, 'You are not allowed to delete this project.')
+		return redirect('projects')
 
 	# If POST request has been submitted then delete the project and redirect to all the projects page.
 	if request.method == 'POST':
