@@ -51,14 +51,16 @@ def create_project(request):
 def update_project(request, project_id):
 	# Get the specific project from db to update depend on project_id.
 	project = ProjectsModel.objects.get(id=project_id)
+
+	user_profile = UserProfileModel.objects.get(user=request.user)
 	# Get the ProjectForm. So, all the inputs have to be filled.
-	form = ProjectForm(initial={
+	form = ProjectForm(user_profile, initial={
 		'project_image': None,
 	},instance=project)
 
 	if request.method == 'POST':
 		# request.FILES to get the image. and instance=project to update the project.
-		form = ProjectForm(request.POST, request.FILES, instance=project)
+		form = ProjectForm(user_profile, request.POST, request.FILES, instance=project)
 		# If form is valid then save the form. and Project updated.
 		# Redirect to all the projects page.
 		if form.is_valid():

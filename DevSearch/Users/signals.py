@@ -48,3 +48,17 @@ def deleteUser(sender, instance, **kwargs):
 	user = instance.user
 	user.delete()
 
+
+@receiver(post_save, sender=SkillsModel)
+def addSkillToUserProfile(sender, instance, **kwargs):
+	# Skills Model
+	skills = instance
+
+	# Get user profile from skills model.
+	user_profile = skills.owner
+
+	# Add new skill to user profile.
+	user_profile.skills.add(skills)
+
+	# Save the user profile.
+	user_profile.save()

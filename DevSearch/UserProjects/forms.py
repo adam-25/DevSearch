@@ -20,8 +20,9 @@ class ProjectForm(ModelForm):
 
 	# applying to class to inputs of the form.
 	# Place holder to each input.
-	def __init__(self, *args, **kwargs):
+	def __init__(self, user, *args, **kwargs):
 		super(ProjectForm, self).__init__(*args, **kwargs)
-		
+		self.fields['project_skills'].widget = forms.CheckboxSelectMultiple()
+		self.fields['project_skills'].queryset = SkillsModel.objects.filter(owner=user)
 		for field in self.fields.values():
 			field.widget.attrs.update({'class': 'input', 'placeholder': field.label, 'autocomplete': 'off'})
