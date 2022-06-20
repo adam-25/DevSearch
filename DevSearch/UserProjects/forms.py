@@ -24,4 +24,4 @@ class ProjectForm(ModelForm):
 		super(ProjectForm, self).__init__(*args, **kwargs)
 		
 		for field in self.fields.values():
-			field.widget.attrs.update({'class': 'input', 'placeholder': field.label + '...', 'autocomplete': 'off'})
+			field.widget.attrs.update({'class': 'input', 'placeholder': field.label, 'autocomplete': 'off'})

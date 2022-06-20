@@ -11,7 +11,11 @@
 			<br>
 
 			<form method="POST" enctype="multipart/form-data" class="form">
+				{% if create %}
 				<h2>Create New Project</h2>
+				{% else %}
+				<h2>Update Project</h2>
+				{% endif %}
 				{% csrf_token %}
 				<!-- Loop through the form and render input tag of the form. -->
 				{% for item in form %}

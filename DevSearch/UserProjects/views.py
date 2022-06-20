@@ -43,7 +43,7 @@ def create_project(request):
 			return redirect('projects')
 
 	# Otherwise render the empty form.
-	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form})
+	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form, 'create': True})
 
 # Update an Existing Project.
 # Project updating required user to login. and redirect to login page.
@@ -52,10 +52,12 @@ def update_project(request, project_id):
 	# Get the specific project from db to update depend on project_id.
 	project = ProjectsModel.objects.get(id=project_id)
 	# Get the ProjectForm. So, all the inputs have to be filled.
-	form = ProjectForm(instance=project)
+	form = ProjectForm(initial={
+		'project_image': None,
+	},instance=project)
 
 	if request.method == 'POST':
-		# request.FILES to get the image. and instace=project to update the project.
+		# request.FILES to get the image. and instance=project to update the project.
 		form = ProjectForm(request.POST, request.FILES, instance=project)
 		# If form is valid then save the form. and Project updated.
 		# Redirect to all the projects page.
@@ -64,7 +66,7 @@ def update_project(request, project_id):
 			return redirect('projects')
 	
 	# Otherwise render the empty form.
-	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form})
+	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form, 'create': False})
 
 # Delete an Existing Project.
 # Project delete required user to login. and redirect to login page.
