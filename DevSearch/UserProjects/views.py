@@ -30,12 +30,14 @@ def specific_project(request, project_id):
 @login_required(login_url='user_login')
 def create_project(request):
 	# Get the ProjectForm. 
-	form = ProjectForm()
+	user_profile = UserProfileModel.objects.get(user=request.user)
+
+	form = ProjectForm(user_profile)
 
 	# If form is submitted then check form is valid or not.
 	if request.method == 'POST':
 		# request.FILES to get the image.
-		form = ProjectForm(request.POST, request.FILES)
+		form = ProjectForm(user_profile, request.POST, request.FILES)
 		if form.is_valid():
 			# If form is valid then save the form. and Project created.
 			# Redirect to all the projects page.
