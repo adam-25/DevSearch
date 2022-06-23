@@ -38,6 +38,7 @@ class UserProfileModel(models.Model):
 # SkillsModel to contain the skills of an user.
 class SkillsModel(models.Model):
 	# Name, and description of skills.
+	# Owner of the skill.
 	owner = models.ForeignKey(UserProfileModel, on_delete=models.DO_NOTHING, null=True)
 	name = models.CharField(max_length=200)
 	description = models.TextField(null=True, blank=True)

@@ -452,8 +452,7 @@ img {
 }
 
 .singleProject__preview {
-	height: 50vh;
-	object-fit: cover;
+	height: 40rem;
 	object-position: top center;
 	margin-bottom: 3rem;
 	border-radius: 0.7rem;
@@ -516,9 +515,12 @@ img {
 
 /*========== Projects ==========*/
 
+.project {
+	width: 100%;
+}
+
 .project__thumbnail {
 	height: 25rem;
-	object-fit: cover;
 	object-position: top center;
 }
 

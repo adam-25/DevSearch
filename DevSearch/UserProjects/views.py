@@ -3,6 +3,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 
+# Importing messages.
 from django.contrib import messages
 
 # Importing forms and models of the project.
@@ -41,12 +42,14 @@ def create_project(request):
 		# request.FILES to get the image.
 		form = ProjectForm(user_profile, request.POST, request.FILES)
 		if form.is_valid():
-			# If form is valid then save the form. and Project created.
-			# Redirect to all the projects page.
-			project = form.save(commit=False)
-			project.owner = user_profile
-			project.save()
-			return redirect('projects')
+			form.save()
+			return redirect('user_account')
+		else:
+			# If form is not valid then render the form with error messages.
+			for i in form.errors.values():
+				messages.error(request, i)
+			
+			redirect('create_project')
 
 	# Otherwise render the empty form.
 	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form, 'create': True})
@@ -73,12 +76,20 @@ def update_project(request, project_id):
 
 	if request.method == 'POST':
 		# request.FILES to get the image. and instance=project to update the project.
-		form = ProjectForm(user_profile, request.POST, request.FILES, instance=project)
+		form = ProjectForm(user_profile, request.POST, request.FILES, instance=project, initial={
+			'project_image': None,
+		})
 		# If form is valid then save the form. and Project updated.
 		# Redirect to all the projects page.
 		if form.is_valid():
 			form.save()
-			return redirect('projects')
+			return redirect('user_account')
+		else:
+			# If form is not valid then render the form with error messages.
+			for i in form.errors.values():
+				messages.error(request, i)
+			
+			redirect('update_project', project_id)
 	
 	# Otherwise render the empty form.
 	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form, 'create': False})

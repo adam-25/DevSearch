@@ -49,6 +49,7 @@ def deleteUser(sender, instance, **kwargs):
 	user.delete()
 
 
+# When add new skill then it also apply to the owner of the skill.
 @receiver(post_save, sender=SkillsModel)
 def addSkillToUserProfile(sender, instance, **kwargs):
 	# Skills Model

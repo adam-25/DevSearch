@@ -1,3 +1,4 @@
+<!-- Extending main html template -->
 {% extends '../../Main/main.html' %}
 {% load static %}
 
@@ -9,6 +10,7 @@
 	<div class="card">
 		<div class="auth__header text-center">
 			<a href="/">
+				<!-- Logo -->
 				<img src="{% static 'Images/Logo/LoginPageLogo.png' %}" alt="icon" style="height: 5rem;" />
 			</a>
 			<h3>Account Login</h3>
@@ -58,16 +60,20 @@
 			{% csrf_token %}
 
 			<!-- Registration django form -->
-			{% for i in form %}
+			{% for field in form %}
 			<div class="form__field">
-				<label for="formInput#text">{{i.label}}</label>
-				{{i}}
+				<!-- Django form label -->
+				<label for="formInput#text">{{field.label}}</label>
+				<!-- Input field -->
+				{{field}}
 			</div>
 			{% endfor %}
+			<!-- Submit button -->
 			<div class="auth__actions">
 				<input class="btn btn--sub btn--lg" type="submit" value="Sign  In" />
 			</div>
 		</form>
+		<!-- If user already have an account then go to log in user. -->
 		<div class="auth__alternative">
 			<p>Already have an Account?</p>
 			<a href="{% url 'user_login' %}">Log In</a>

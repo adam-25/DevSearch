@@ -14,19 +14,21 @@ class ProjectForm(ModelForm):
 
 		# Fields to render in html template.
 		fields = ['project_owner', 'project_title', 'project_description', 'project_demo', 'source_code', 'project_skills', 'project_image']
-		# making project_skills input as a checkbox.
-		widgets = {
-			'project_skills': forms.CheckboxSelectMultiple(),
-		}
-
+	
 	# applying to class to inputs of the form.
 	# Place holder to each input.
 	def __init__(self, user, *args, **kwargs):
 		super(ProjectForm, self).__init__(*args, **kwargs)
+		# Project skills checkbox.add()
 		self.fields['project_skills'].widget = forms.CheckboxSelectMultiple()
+
+		# Get only projects skill which belongs to the user.
 		self.fields['project_skills'].queryset = SkillsModel.objects.filter(owner=user)
+
+		# Project owner assigning and hiding the field and label.
 		self.fields['project_owner'].initial = user
 		self.fields['project_owner'].widget = forms.HiddenInput()
 		self.fields['project_owner'].label = ''
+
 		for field in self.fields.values():
 			field.widget.attrs.update({'class': 'input', 'placeholder': field.label, 'autocomplete': 'off'})

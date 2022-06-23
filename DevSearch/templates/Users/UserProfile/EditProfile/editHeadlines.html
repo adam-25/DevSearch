@@ -1,25 +1,21 @@
+<!-- Extending main template -->
 {% extends '../../../Main/main.html' %}
 
 {% block content %}
-
-<form method="POST">
-
-
-
-</form>
-
 <main class="formPage my-xl">
 	<div class="content-box">
 		<div class="formWrapper">
 			<a class="backButton" href="#"><i class="im im-angle-left"></i></a>
 			<br>
-
+			<!-- Heading of the form. -->
 			<h2>Edit Account Info.</h2>
 			<form class="form" method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
+				<!-- Form with div so, apply style. -->
 				<div class="form__field">
 					{{ form.as_p }}
 				</div>
+				<!-- Update button -->
 				<input type="submit" class="btn btn--sub btn--lg" value="Update">
 			</form>
 		</div>

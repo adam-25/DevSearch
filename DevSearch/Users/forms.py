@@ -32,15 +32,12 @@ class SignUpForm(UserCreationForm):
 			field.widget.attrs.update({'class': 'input', 'autocomplete': 'off', 'required': True})
 
 class EditHeadlineForm(forms.ModelForm):
-	skills = forms.ModelMultipleChoiceField(
-			queryset=SkillsModel.objects.all(),
-			widget=forms.CheckboxSelectMultiple,
-		)
 	class Meta:
 		model = UserProfileModel
-		fields = ('username', 'first_name', 'last_name', 'user_email', 'profession', 'bio', 'location', 'github', 'linkedin', 'twitter', 'youtube', 'website', 'skills', 'image')
+		fields = ('username', 'first_name', 'last_name', 'user_email', 'profession', 'bio', 'location', 'github', 'linkedin', 'twitter', 'youtube', 'website', 'image')
 
 	def __init__(self, *args, **kwargs):
 		super(EditHeadlineForm, self).__init__(*args, **kwargs)
+		# adding class to all the inputs.
 		for field in self.fields.values():
 			field.widget.attrs.update({'class': 'input', 'style': 'margin-bottom: 15px'})

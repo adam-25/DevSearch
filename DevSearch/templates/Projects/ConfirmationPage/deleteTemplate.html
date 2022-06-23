@@ -11,7 +11,7 @@
 	<h5>You want to delete {{project}}...</h5>
 	<form method="POST">
 		{% csrf_token %}
-		<!-- If  -->
+		<!-- If user cancel then go to the project page again. -->
 		<a href="{% url 'specific_project' project.id %}">Cancel</a>
 		<input type="submit" value="Delete">
 	</form>

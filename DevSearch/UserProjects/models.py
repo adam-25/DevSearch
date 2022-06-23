@@ -16,8 +16,9 @@ class ProjectsModel(models.Model):
 	project_description = models.TextField()
 	project_demo = models.CharField(max_length=1000, null=True, blank=True)
 	source_code = models.CharField(max_length=1000, null=True, blank=True)
+	# ManyToMany Relationship with the skills model.
 	project_skills = models.ManyToManyField(SkillsModel)
-	project_image = models.ImageField(upload_to='Images/Project/', blank=True, default='Images/Project/default.jpg')
+	project_image = models.ImageField(upload_to='Images/Project/ProjectImagesUser/', blank=True, default='Images/Project/default.jpg')
 	total_votes = models.IntegerField(default=0, null=True, blank=True)
 	vote_ratio = models.IntegerField(default=0, null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)

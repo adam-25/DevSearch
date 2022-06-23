@@ -98,7 +98,7 @@ def registerUser(request):
 			user = authenticate(request, username=form.cleaned_data['username'], password=form.cleaned_data['password2'])
 			login(request, user)
 			messages.success(request, "User account has been created successfully...")
-			return redirect('/')
+			return redirect('edit_account')
 		else:
 			# If there is an error in form, Display a message of an error.
 			for i in form.errors.values():
