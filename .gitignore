@@ -11,6 +11,7 @@ media
 .DS_Store
 
 /DevSearch/static/Images/Project/ProjectImagesUser/
+/DevSearch/static/Images/User/UserImages/
 # If you are using PyCharm # 
 # User-specific stuff
 .idea/**/workspace.xml

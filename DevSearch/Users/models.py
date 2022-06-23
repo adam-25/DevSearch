@@ -22,7 +22,7 @@ class UserProfileModel(models.Model):
 	# Many to many relationship with SkillsModel.
 	skills = models.ManyToManyField('SkillsModel')
 	bio = models.TextField(max_length=10000, blank=True, null=True)
-	image = models.ImageField(upload_to="User/", default="Images/User/user.png", blank=True)
+	image = models.ImageField(upload_to="Images/User/UserImages", default="Images/User/user.png", blank=True)
 	github = models.CharField(max_length=500, blank=True, null=True)
 	linkedin = models.CharField(max_length=500, blank=True, null=True)
 	twitter = models.CharField(max_length=500, blank=True, null=True)
