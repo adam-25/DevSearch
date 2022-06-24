@@ -15,9 +15,9 @@
 					<div class="form__field">
 						<label for="formInput#search">Search Developers </label>
 						{% if search == '' %}
-						<input class="input input--text" id="formInput#search" type="text" name="dev_search" placeholder="Search Developers...">
+						<input class="input input--text" id="formInput#search" type="text" name="search" placeholder="Search Developers...">
 						{% else %}
-						<input class="input input--text" id="formInput#search" type="text" name="dev_search"
+						<input class="input input--text" id="formInput#search" type="text" name="search"
 							value="{{search}}" />
 						{% endif %}
 					</div>
@@ -67,6 +67,7 @@
 				{% endfor %}
 			</div>
 		</div>
+		{% include '../../Layout/Paginator/paginator.html' with search=search %}
 	</section>
 </main>
 

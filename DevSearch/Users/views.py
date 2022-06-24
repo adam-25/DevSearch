@@ -4,6 +4,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .features import pagination
 
 # App models and Projects app Model.
 from .models import *
@@ -20,14 +21,27 @@ def allUsers(request):
 
 	search = '';
 
-	if request.GET.get('dev_search'):
-		search = request.GET.get('dev_search')
+	if request.GET.get('search'):
+		search = request.GET.get('search')
 
 	# Filter project by search when search contains either first_name, last_name, profession or skills.
-	users = UserProfileModel.objects.distinct().filter(Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(skills__name__icontains=search) | Q(profession__icontains=search))
+	users = UserProfileModel.objects.distinct().filter(
+		Q(first_name__icontains=search) 
+		| Q(last_name__icontains=search) 
+		| Q(skills__name__icontains=search) 
+		| Q(profession__icontains=search))
+
+	# Pagination
+	users, custom_range, p, page = pagination(request, users)
 
 	# Return template with users with specific search.
-	return render(request, 'Users/Home/allUsers.html', {'users': users, 'search': search})
+	return render(request, 'Users/Home/allUsers.html', {
+		'users': users, 
+		'search': search, 
+		'custom_range': custom_range, 
+		'p': p, 
+		'page': int(page)
+	})
 
 # Get specific user and render it.
 def userProfile(request, user_id):

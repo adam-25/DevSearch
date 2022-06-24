@@ -6,10 +6,15 @@ from django.contrib.auth.decorators import login_required
 # Importing messages.
 from django.contrib import messages
 
+from Users.features import pagination
+
 # Importing forms and models of the project.
 from .forms import *
 from .models import *
 from django.db.models import Q
+
+# Pagination
+from django.core.paginator import Paginator, EmptyPage
 
 # Create your views here.
 
@@ -17,21 +22,32 @@ from django.db.models import Q
 def all_projects(request):
 
 	# Search projects.
-	project_search = ''
+	search = ''
 
-	if request.GET.get('project_search'):
-		project_search = request.GET.get('project_search')
+	if request.GET.get('search'):
+		search = request.GET.get('search')
 	
 	# Get projects depending on the search.
-	allProjects = ProjectsModel.objects.filter(
-		Q(project_title__icontains=project_search) 
-	| Q(project_description__icontains=project_search) 
-	| Q(project_skills__name__icontains=project_search) 
-	| Q(project_owner__first_name__icontains=project_search) 
-	| Q(project_owner__last_name__icontains=project_search))
+	allProjects = ProjectsModel.objects.distinct().filter(
+		Q(project_title__icontains=search) 
+	| Q(project_description__icontains=search) 
+	| Q(project_skills__name__icontains=search) 
+	| Q(project_owner__first_name__icontains=search) 
+	| Q(project_owner__last_name__icontains=search))
 
-	# Render searched the projects to the html page.
-	return render(request, 'Projects/GetProjects/projects.html', {'allProjects': allProjects})
+	# Pagination.
+	# Passing an array of objects and the number of objects per page.
+
+	projects, custom_range, p, page = pagination(request, allProjects)
+
+	# Render searched projects to the html page.
+	return render(request, 'Projects/GetProjects/projects.html', {
+		'allProjects': projects,
+		'page': int(page), 
+		'search': search, 
+		'p': p, 
+		'custom_range': custom_range
+	})
 
 # Getting specific project from db.
 def specific_project(request, project_id):

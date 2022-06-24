@@ -1,0 +1,64 @@
+<div class="pagination">
+	<ul class="container">
+		<!-- If there is only one page, don't show anything -->
+		{% if search == '' %}
+		{% if p.num_pages != 1 %}
+		<!-- If current page is 1, then disable the previous button. -->
+		{% if page == 1 %}
+		<li><a class="btn btn--disabled">&#10094;&#10094; First</a></li>
+		<li><a class="btn btn--disabled">&#10094; Prev</a></li>
+		{% else %}
+		<li><a href="?page={{1}}" class="btn">&#10094;&#10094; First</a></li>
+		<li><a href="?page={{page|add:'-1'}}" class="btn">&#10094; Prev</a></li>
+		{% endif %}
+
+		<!-- Loop through the range of the pages. -->
+		{% for i in custom_range %}
+		<!-- If there is current page, then change the class of the page. -->
+		{% if page == i %}
+		<li><a href="?page={{i}}" class="btn btn--sub">{{i}}</a></li>
+		{% else %}
+		<li><a href="?page={{i}}" class="btn">{{i}}</a></li>
+		{% endif %}
+		{% endfor %}
+		<!-- If current page is last page, then disable the next button. -->
+		{% if page == p.num_pages %}
+		<li><a class="btn btn--disabled">Next &#10095;</a></li>
+		<li><a class="btn btn--disabled">Last &#10095;&#10095;</a></li>
+		{% else %}
+		<li><a href="?page={{page|add:'1'}}" class="btn">Next &#10095;</a></li>
+		<li><a href="?page={{p.num_pages}}" class="btn">Last &#10095;&#10095;</a></li>
+		{% endif %}
+		{% endif %}
+		{% else %}
+		{% if p.num_pages != 1 %}
+		<!-- If current page is 1, then disable the previous button. -->
+		{% if page == 1 %}
+		<li><a class="btn btn--disabled">&#10094;&#10094; First</a></li>
+		<li><a class="btn btn--disabled">&#10094; Prev</a></li>
+		{% else %}
+		<li><a href="?page={{1}}&search={{search}}" class="btn">&#10094;&#10094; First</a></li>
+		<li><a href="?page={{page|add:'-1'}}&search={{search}}" class="btn">&#10094; Prev</a></li>
+		{% endif %}
+
+		<!-- Loop through the range of the pages. -->
+		{% for i in custom_range %}
+		<!-- If there is current page, then change the class of the page. -->
+		{% if page == i %}
+		<li><a href="?page={{i}}&search={{search}}" class="btn btn--sub">{{i}}</a></li>
+		{% else %}
+		<li><a href="?page={{i}}&search={{search}}" class="btn">{{i}}</a></li>
+		{% endif %}
+		{% endfor %}
+		<!-- If current page is last page, then disable the next button. -->
+		{% if page == p.num_pages %}
+		<li><a class="btn btn--disabled">Next &#10095;</a></li>
+		<li><a class="btn btn--disabled">Last &#10095;&#10095;</a></li>
+		{% else %}
+		<li><a href="?page={{page|add:'1'}}&search={{search}}" class="btn">Next &#10095;</a></li>
+		<li><a href="?page={{p.num_pages}}&search={{search}}" class="btn">Last &#10095;&#10095;</a></li>
+		{% endif %}
+		{% endif %}
+		{% endif %}
+	</ul>
+</div>

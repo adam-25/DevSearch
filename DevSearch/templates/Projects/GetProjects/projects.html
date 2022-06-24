@@ -17,8 +17,13 @@
 				<form class="form" method="get">
 					<div class="form__field">
 						<label for="formInput#search">Search By Projects </label>
-						<input class="input input--text" id="formInput#search" type="text" name="project_search"
+						{% if search == '' %}
+						<input class="input input--text" id="formInput#search" type="text" name="search"
 							placeholder="Search by Project..." />
+						{% else %}
+						<input class="input input--text" id="formInput#search" type="text" name="search"
+							value="{{search}}" />
+						{% endif %}
 					</div>
 
 					<input class="btn btn--sub btn--lg" type="submit" value="Search" />
@@ -37,23 +42,25 @@
 						<!-- Making card as an url to redirect to specific_project. -->
 						<a href="{% url 'specific_project' project.id %}" class="project">
 							<!-- Project Image -->
-							<img class="project__thumbnail" src="{{ project.project_image.url }}" alt={{project}}/>
+							<img class="project__thumbnail" src="{{ project.project_image.url }}" alt={{project}} />
 							<div class="card__body">
 								<!-- Project title. -->
 								<h3 class="project__title">{{project.project_title}}</h3>
 								<!-- Project Owner -->
-								<p><a class="project__author" href="{% url 'user_profile' project.project_owner.id %}">By {{project.project_owner}}</a></p>
+								<p><a class="project__author"
+										href="{% url 'user_profile' project.project_owner.id %}">By
+										{{project.project_owner}}</a></p>
 								<!-- Total project positive vote ratio -->
 								<p class="project--rating">
 									<span style="font-weight: bold;">{{project.vote_ratio}}%</span> Postitive
 									<!-- if total project votes is 0 or 1 then render Vote otherwise, Votes -->
 									{% if project.total_votes == 1 or project.total_votes == 0 %}
-										Feedback ({{project.total_votes}} Vote)
+									Feedback ({{project.total_votes}} Vote)
 									{% else %}
-										Feedback ({{project.total_votes}} Votes)
+									Feedback ({{project.total_votes}} Votes)
 									{% endif %}
 								</p>
-								
+
 								<!-- Total skills in the project. -->
 								<div class="project__tags">
 									{% for tag in project.project_skills.all %}
@@ -69,6 +76,7 @@
 				{% endfor %}
 			</div>
 		</div>
+		{% include '../../Layout/Paginator/paginator.html' with search=search %}
 	</section>
 </main>
 
