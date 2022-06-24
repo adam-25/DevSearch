@@ -1,4 +1,5 @@
 # Redirect page.
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 # Importing login, logout, authenticate to do User authentication and authorization stuff.
@@ -127,9 +128,11 @@ def user_account(request):
 	# Render html page and passing users skills and projects.
 	return render(request, 'Users/UserProfile/userAccount.html', {'user': userProfile, 'topSkills': topSkills, 'projects': projects, 'otherSkills': otherSkills})
 
+# User can edit their account.
 @login_required(login_url='user_login')
 def edit_account_profile(request):
 
+	# Getting user profile.
 	profile = UserProfileModel.objects.get(user=request.user)
 
 	form = EditHeadlineForm(initial={
@@ -148,22 +151,27 @@ def edit_account_profile(request):
 		'image': None
 	}, instance=profile)
 
+	# Getting all users.
 	all_user_profile = UserProfileModel.objects.all()
 
 	usernames = []
 
+	# Append all the usernames to the usernames list.
 	for user in all_user_profile:
 		usernames.append(user.username)
 	
+	# remove current user name from the list.
 	usernames.remove(profile.username)
 
 	if request.method == 'POST':
 		form = EditHeadlineForm(request.POST, request.FILES, instance=profile)
 
+		# If username already exist in the database then display a message.
 		if request.POST['username'] in usernames:
 			messages.error(request, "Username already exists.")
 			redirect('edit_account')		
 		else:
+			# If form is valid then save the form.
 			if form.is_valid():
 				form.save()
 				messages.success(request, "User has been updated successfully")
@@ -175,3 +183,190 @@ def edit_account_profile(request):
 				return redirect('edit_account')
 
 	return render(request, 'Users/UserProfile/EditProfile/editHeadlines.html', {'form': form})
+
+# Add skill which have an description.
+@login_required(login_url='user_login')
+def add_top_skill(request):
+
+	# Getting user profile.
+	profile = UserProfileModel.objects.get(user=request.user)
+
+	# Getting all the skills associated with the user.
+	allSkills = SkillsModel.objects.filter(owner=profile)
+
+	skills = []
+
+	# Append all the skills to the skills list.
+	for i in allSkills:
+		skills.append(i.name)
+
+	# Get the form to add a skill.
+	form = AddSkillForm(profile)
+
+	if request.method == 'POST':
+		form = AddSkillForm(profile, request.POST)
+
+		# If skill already exist with an owner then display a message.
+		if request.POST['name'] in skills:
+			messages.error(request, "Skill already exists.")
+			return redirect('add_top_skill')
+
+		# If form is valid then save the form.
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Skill has been added successfully")
+			return redirect('user_account')
+		else:
+			for field in form.errors:
+				messages.error(request, field)
+			
+			return redirect('add_top_skill')
+
+	return render(request, 'Users/UserProfile/EditProfile/addSkills.html', {'form': form})
+
+
+# Add skill which does not have a description.
+@login_required(login_url='user_login')
+def add_other_skill(request):
+
+	# Getting user profile and skill associated with it.
+	profile = UserProfileModel.objects.get(user=request.user)
+	allSkills = SkillsModel.objects.filter(owner=profile)
+
+	skills = []
+
+	# Append all the skills to the skills list.
+	for i in allSkills:
+		skills.append(i.name)
+
+	# Get the form to add a skill.
+	form = AddOtherSkillForm(profile)
+
+	if request.method == 'POST':
+		form = AddOtherSkillForm(profile, request.POST)
+
+		# If skill already exist with an owner then display a message.
+		if request.POST['name'] in skills:
+			messages.error(request, "Skill already exists.")
+			return redirect('add_other_skill')
+
+		# If form is valid then save the form.
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Skill has been added successfully")
+			return redirect('user_account')
+		else:
+			for field in form.errors:
+				messages.error(request, field)
+			
+			return redirect('add_top_skill')
+
+	return render(request, 'Users/UserProfile/EditProfile/addSkills.html', {'form': form})
+
+# Edit skill which have a description.
+@login_required(login_url='user_login')
+def edit_top_skill(request, skill_id):
+	
+	# Getting skill, profile.
+	skill = SkillsModel.objects.get(id=skill_id)
+	profile = UserProfileModel.objects.get(user=request.user)
+	allSkills = SkillsModel.objects.filter(owner=profile)
+	skills = []
+
+	# Append all the skills to the skills list.
+	for i in allSkills:
+		skills.append(i.name)
+
+	form = AddOtherSkillForm(profile)
+
+	# If skill owner is not the current user then display a message.
+	if skill.owner.id != profile.id:
+		messages.error(request, "You are not allowed to edit this skill.")
+		return redirect('user_account')
+	
+	form = AddSkillForm(profile, instance=skill)
+
+	if request.method == 'POST':
+		form = AddSkillForm(profile, request.POST, instance=skill)
+
+		# If skill already exist with an owner then display a message.
+		if request.POST['name'] in skills and request.POST['name'] != skill.name:
+			messages.error(request, "Skill already exists.")
+			return redirect('edit_top_skill', skill_id=skill_id)
+
+		# If form is valid then save the form.
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Skill has been updated successfully")
+			return redirect('user_account')
+		else:
+			for field in form.errors:
+				messages.error(request, field)
+			
+			return redirect('edit_top_skill', skill_id)
+
+	return render(request, 'Users/UserProfile/EditProfile/addSkills.html', {'form': form, 'edit': True})
+
+# Edit skill which does not have a description.
+@login_required(login_url='user_login')
+def edit_other_skill(request, skill_id):
+
+	# Getting skill, profile.
+	skill = SkillsModel.objects.get(id=skill_id)
+	profile = UserProfileModel.objects.get(user=request.user)
+
+	# If skill owner is not the current user then display a message.
+	if skill.owner.id != profile.id:
+		messages.error(request, "You are not allowed to edit this skill.")
+		return redirect('user_account')
+
+	# Get all skill associated with the user.
+	allSkills = SkillsModel.objects.filter(owner=profile)
+	skills = []
+
+	for i in allSkills:
+		skills.append(i.name)
+
+	form = AddOtherSkillForm(profile, instance=skill)
+
+	if request.method == 'POST':
+		form = AddOtherSkillForm(profile, request.POST, instance=skill)
+
+		# If skill already exist with an owner then display a message.
+		if request.POST['name'] in skills and request.POST['name'] != skill.name:
+			messages.error(request, "Skill already exists.")
+			return redirect('edit_other_skill', skill_id=skill_id)
+
+		# If form is valid then save the form.
+		if form.is_valid():
+			form.save()
+			messages.success(request, "Skill has been updated successfully")
+			return redirect('user_account')
+		else:
+			for field in form.errors:
+				messages.error(request, field)
+			
+			return redirect('edit_other_skill', skill_id)
+
+
+	return render(request, 'Users/UserProfile/EditProfile/addSkills.html', {'form': form, 'otherSkill': True, 'skill_id': skill_id, 'edit': True})
+
+# Delete skill.
+@login_required(login_url='user_login')
+def delete_skill(request, skill_id):
+
+	# Get skill and profile.
+	skill = SkillsModel.objects.get(id=skill_id)
+	user_profile = UserProfileModel.objects.get(user=request.user)
+
+	# If skill owner is not the current user then display a message.
+	if skill.owner.id != user_profile.id:
+		messages.error(request, 'You are not allowed to delete this skill.')
+		return redirect('user_account')
+
+	# Delete skill.
+	if request.method == 'POST':
+		skill.delete()
+		return redirect('user_account')
+	else:
+		return render(request, 'Projects/ConfirmationPage/deleteTemplate.html', {'project': skill})

@@ -1,5 +1,4 @@
-<!-- Extending main template -->
-{% extends '../../../Main/main.html' %}
+{% extends "../../../Main/main.html" %}
 
 {% block content %}
 <main class="formPage my-xl">
@@ -8,8 +7,8 @@
 			<a class="backButton" href="{% url 'user_account' %}"><i class="im im-angle-left"></i></a>
 			<br>
 			<!-- Heading of the form. -->
-			<h2>Edit Account Info.</h2>
-			<form class="form" method="POST" enctype="multipart/form-data">
+			<form class="form" method="POST">
+				{% csrf_token %}
 				{% for field in form %}
 				<div class="form__field">
 					<!-- Django form label -->
@@ -18,8 +17,16 @@
 					{{field}}
 				</div>
 				{% endfor %}
-				<!-- Update button -->
+				<!-- Add or update button -->
+				{% if edit %}
 				<input type="submit" class="btn btn--sub btn--lg" value="Update">
+				{% else %}
+				<input type="submit" class="btn btn--sub btn--lg" value="Add">
+				{% endif %}
+				{% if otherSkill %}
+				<!-- Delete button -->
+				<a class="btn btn--sub btn--lg" href="{% url 'delete_skill' skill_id %}" style="padding: 0.63em 2.2em">Delete</a>
+				{% endif %}
 			</form>
 		</div>
 	</div>

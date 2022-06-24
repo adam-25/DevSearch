@@ -6,14 +6,16 @@
 <!-- Writing html in block content -->
 {% block content %}
 
+<div class="confirmation-box">
 	<h1>Are you sure?</h1>
 	<!-- Sent obj from views. -->
 	<h5>You want to delete {{project}}...</h5>
 	<form method="POST">
 		{% csrf_token %}
 		<!-- If user cancel then go to the project page again. -->
-		<a href="{% url 'specific_project' project.id %}">Cancel</a>
+		<a href="{% url 'user_account' %}">Cancel</a>
 		<input type="submit" value="Delete">
 	</form>
+</div>
 
 {% endblock %}

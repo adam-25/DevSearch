@@ -63,3 +63,19 @@ def addSkillToUserProfile(sender, instance, **kwargs):
 
 	# Save the user profile.
 	user_profile.save()
+
+
+# When delete skill then it also apply to the owner of the skill.
+@receiver(post_delete, sender=SkillsModel)
+def deleteSkillUserProfile(sender, instance, **kwargs):
+	# Skills Model
+	skill = instance
+
+	# Get user profile depend on the owner of the skill.
+	user_profile = skill.owner
+
+	# Delete skill from user profile.
+	user_profile.skills.remove(skill)
+
+	# Save the user profile.
+	user_profile.save()

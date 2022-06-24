@@ -107,12 +107,12 @@ def delete_project_confirmation(request, project_id):
 		pass
 	else:
 		messages.error(request, 'You are not allowed to delete this project.')
-		return redirect('projects')
+		return redirect('user_account')
 
 	# If POST request has been submitted then delete the project and redirect to all the projects page.
 	if request.method == 'POST':
 		project.delete()
-		return redirect('projects')
+		return redirect('user_account')
 
 	# Otherwise render the delete confirmation page.
 	return render(request, 'Projects/ConfirmationPage/deleteTemplate.html', {'project': project})

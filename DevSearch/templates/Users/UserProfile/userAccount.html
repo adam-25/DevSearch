@@ -9,7 +9,8 @@
 				<div class="card text-center">
 					<div class="card__body dev">
 						<!-- Redirect to the page where user can edit their main information -->
-						<a class="tag tag--pill tag--main settings__btn" href="{% url 'edit_account' %}"><i class="im im-edit"></i> Edit</a>
+						<a class="tag tag--pill tag--main settings__btn" href="{% url 'edit_account' %}"><i
+								class="im im-edit"></i> Edit</a>
 						<!-- User Image -->
 						<img class="avatar avatar--xl dev__avatar" src="{{user.image.url}}" />
 						<!-- User name -->
@@ -57,7 +58,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="column column--2of3">
 				<!-- User bio -->
 				<div class="devInfo">
@@ -70,7 +71,8 @@
 				<!-- Skills Heading of top skills -->
 				<div class="settings">
 					<h3 class="settings__title">Skills</h3>
-					<a class="tag tag--pill tag--sub settings__btn tag--lg" href="#"><i class="im im-plus"></i> Add
+					<a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'add_top_skill' %}"><i
+							class="im im-plus"></i> Add
 						Skill</a>
 				</div>
 
@@ -88,9 +90,9 @@
 							</p>
 						</td>
 						<td class="settings__tableActions">
-							<a class="tag tag--pill tag--main settings__btn" href="#"><i class="im im-edit"></i>
+							<a class="tag tag--pill tag--main settings__btn" href="{% url 'edit_top_skill' skill.id %}"><i class="im im-edit"></i>
 								Edit</a>
-							<a class="tag tag--pill tag--main settings__btn" href="#"><i
+							<a class="tag tag--pill tag--main settings__btn" href="{% url 'delete_skill' skill.id %}"><i
 									class="im im-x-mark-circle-o"></i>
 								Delete</a>
 						</td>
@@ -101,16 +103,19 @@
 					<div class="settings">
 						<!-- Heading of other skills -->
 						<h3 class="settings__title">Other Skills</h3>
-						<a class="tag tag--pill tag--sub settings__btn tag--lg" href="#"><i class="im im-plus"></i> Add
+						<a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'add_other_skill' %}"><i
+								class="im im-plus"></i> Add
 							Skill</a>
 					</div>
 					<br>
 					<!-- Other skills only with tag not description -->
 					<div class="devInfo__otherSkills">
 						{% for skill in otherSkills %}
-						<span class="tag tag--pill tag--sub tag--lg">
-							<small>{{skill}}</small>
-						</span>
+						<a href="{% url 'edit_other_skill' skill.id %}">
+							<span class="tag tag--pill tag--sub tag--lg">
+								<small>{{skill}}</small>
+							</span>
+						</a>
 						{% endfor %}
 					</div>
 				</table>
@@ -118,7 +123,8 @@
 				<!-- Projects heading -->
 				<div class="settings">
 					<h3 class="settings__title">Projects</h3>
-					<a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create_project' %}"><i class="im im-plus"></i> Add
+					<a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create_project' %}"><i
+							class="im im-plus"></i> Add
 						Project</a>
 				</div>
 
@@ -140,10 +146,11 @@
 							</p>
 						</td>
 						<td class="settings__tableActions">
-							<a class="tag tag--pill tag--main settings__btn" href="{% url 'update_project' project.id %}"><i class="im im-edit"></i>
+							<a class="tag tag--pill tag--main settings__btn"
+								href="{% url 'update_project' project.id %}"><i class="im im-edit"></i>
 								Edit</a>
-							<a class="tag tag--pill tag--main settings__btn" href="{% url 'delete_project' project.id %}"><i
-									class="im im-x-mark-circle-o"></i>
+							<a class="tag tag--pill tag--main settings__btn"
+								href="{% url 'delete_project' project.id %}"><i class="im im-x-mark-circle-o"></i>
 								Delete</a>
 						</td>
 					</tr>
