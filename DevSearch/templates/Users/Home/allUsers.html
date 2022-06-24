@@ -11,11 +11,15 @@
 			</div>
 
 			<div class="hero-section__search">
-				<form class="form" action="#" method="get">
+				<form class="form" method="get">
 					<div class="form__field">
 						<label for="formInput#search">Search Developers </label>
-						<input class="input input--text" id="formInput#search" type="text" name="text"
-							placeholder="Search by developer name" />
+						{% if search == '' %}
+						<input class="input input--text" id="formInput#search" type="text" name="dev_search" placeholder="Search Developers...">
+						{% else %}
+						<input class="input input--text" id="formInput#search" type="text" name="dev_search"
+							value="{{search}}" />
+						{% endif %}
 					</div>
 
 					<input class="btn btn--sub btn--lg" type="submit" value="Search" />

@@ -1,14 +1,14 @@
-# Redirect page.
-from django.http import HttpResponse
 from django.shortcuts import redirect, render
 
 # Importing login, logout, authenticate to do User authentication and authorization stuff.
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
 # App models and Projects app Model.
 from .models import *
 from UserProjects.models import *
+from django.db.models import Q
 
 # Importing SignUpForm from forms.
 from .forms import *
@@ -17,11 +17,17 @@ from .forms import *
 
 # All the users in DB.
 def allUsers(request):
-	# Request all the users.
-	users = UserProfileModel.objects.all()
 
-	# Return allUsers template with users.
-	return render(request, 'Users/Home/allUsers.html', {'users': users})
+	search = '';
+
+	if request.GET.get('dev_search'):
+		search = request.GET.get('dev_search')
+
+	# Filter project by search when search contains either first_name, last_name, profession or skills.
+	users = UserProfileModel.objects.distinct().filter(Q(first_name__icontains=search) | Q(last_name__icontains=search) | Q(skills__name__icontains=search) | Q(profession__icontains=search))
+
+	# Return template with users with specific search.
+	return render(request, 'Users/Home/allUsers.html', {'users': users, 'search': search})
 
 # Get specific user and render it.
 def userProfile(request, user_id):

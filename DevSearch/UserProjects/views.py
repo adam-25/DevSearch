@@ -9,15 +9,28 @@ from django.contrib import messages
 # Importing forms and models of the project.
 from .forms import *
 from .models import *
+from django.db.models import Q
 
 # Create your views here.
 
 # Getting all the project from db.
 def all_projects(request):
-	# Get all the project of db.
-	allProjects = ProjectsModel.objects.all()
 
-	# Render all the projects to the html page.
+	# Search projects.
+	project_search = ''
+
+	if request.GET.get('project_search'):
+		project_search = request.GET.get('project_search')
+	
+	# Get projects depending on the search.
+	allProjects = ProjectsModel.objects.filter(
+		Q(project_title__icontains=project_search) 
+	| Q(project_description__icontains=project_search) 
+	| Q(project_skills__name__icontains=project_search) 
+	| Q(project_owner__first_name__icontains=project_search) 
+	| Q(project_owner__last_name__icontains=project_search))
+
+	# Render searched the projects to the html page.
 	return render(request, 'Projects/GetProjects/projects.html', {'allProjects': allProjects})
 
 # Getting specific project from db.
