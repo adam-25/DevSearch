@@ -10,6 +10,7 @@
 			<!-- Heading of the form. -->
 			<h2>Edit Account Info.</h2>
 			<form class="form" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
 				{% for field in form %}
 				<div class="form__field">
 					<!-- Django form label -->
