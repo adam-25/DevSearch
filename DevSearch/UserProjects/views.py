@@ -13,11 +13,7 @@ from .forms import *
 from .models import *
 from django.db.models import Q
 
-# Pagination
-from django.core.paginator import Paginator, EmptyPage
-
 # Create your views here.
-
 # Getting all the project from db.
 def all_projects(request):
 
@@ -33,7 +29,7 @@ def all_projects(request):
 	| Q(project_description__icontains=search) 
 	| Q(project_skills__name__icontains=search) 
 	| Q(project_owner__first_name__icontains=search) 
-	| Q(project_owner__last_name__icontains=search))
+	| Q(project_owner__last_name__icontains=search)).order_by('-vote_ratio', '-total_votes', '-project_title')
 
 	# Pagination.
 	# Passing an array of objects and the number of objects per page.
@@ -54,8 +50,58 @@ def specific_project(request, project_id):
 	# Get all the project from db depend on the project_id.
 	specific_project = ProjectsModel.objects.get(id=project_id)
 
-	# Render the specific project to the html page.
-	return render(request, 'Projects/GetProjects/specificProject.html', {'specific_project': specific_project})
+	# If user is logged in then get the user profile.
+	if request.user.is_authenticated == True:
+		profile = UserProfileModel.objects.get(user=request.user)
+
+	# Get all the reviews of the project.
+	all_reviews = ProjectReviewModel.objects.filter(project=specific_project)
+
+	review_owners = []
+
+	# append all reviews owner id to review_owners.
+	for review in all_reviews:
+		review_owners.append(review.reviewer.id)
+		
+	# Get the form to submit the review.
+	if request.user.is_authenticated == False:
+		form = ReviewForm(None, specific_project)
+	else:
+		form = ReviewForm(profile, specific_project)
+
+	if request.method == 'POST':
+		form = ReviewForm(profile, specific_project, request.POST)
+
+		# If user want to submit review again, then prompt them they have already submitted a review.
+		if form.non_field_errors():
+			messages.error(request, form.non_field_errors())
+			return redirect('specific_project', str(project_id))
+
+		# If form is valid then save the review.
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Review submitted successfully.')
+			return redirect('specific_project', str(project_id))
+		else:
+			# If form is invalid then prompt the user to fill the form correctly.
+			for error in form.errors:
+				messages.error(request, error)
+				return redirect('specific_project', str(project_id))
+
+	# Render the specific review to the html page.
+	if request.user.is_authenticated == True:
+		return render(request, 'Projects/GetProjects/specificProject.html', {
+			'specific_project': specific_project, 
+			'form': form,
+			'review_owners': review_owners, 
+			'profile': profile
+			})
+	else:
+		return render(request, 'Projects/GetProjects/specificProject.html', {
+			'specific_project': specific_project, 
+			'form': form,
+			'review_owners': review_owners
+			})
 
 # Create a new Project.
 # Project creating required user to login. and redirect to login page.

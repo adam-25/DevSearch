@@ -57,34 +57,50 @@
 					</h5>
 
 					<!-- Submit Comment... -->
-					<form class="form" action="#" method="POST">
+					<!-- If user is not logged in then Ask to login -->
+					{% if request.user.is_authenticated == False %}
+					<p class="singleProject">Please <a href="{% url 'user_login' %}">Login</a> to submit a comment.</p>
+					<!-- If user is an owner of the project, then he cannot submit a comment on project. -->
+					{% elif profile.id == specific_project.project_owner.id %}
+					<p class="singleProject">You can't submit a comment on your own project.</p>
+					<!-- If user commented one time, then they cannot comment again. -->
+					{% elif profile.id in review_owners %}
+					<p class="singleProject">You have already submitted a comment on this project.</p>
+					{% else %}
+					<form class="form" method="POST">
+						{% csrf_token %}
 						<!-- Textarea -->
+						{% for field in form %}
 						<div class="form__field">
-							<label for="formInput#textarea">Comments: </label>
-							<textarea class="input input--textarea" name="message" id="formInput#textarea"
-								placeholder="Write your comments here..."></textarea>
+							<label for="formInput#textarea">{{field.label}}</label>
+							{{field}}
 						</div>
-						<input class="btn btn--sub btn--lg" type="submit" value="Comments" />
+						{% endfor %}
+						<!-- Submit button. -->
+						<input class="btn btn--sub btn--lg" type="submit" value="Add" />
 					</form>
+					{% endif %}
+					<!-- Loop through all the reviews of the project. -->
+					{% for review in specific_project.project_reviews.all %}
 					<div class="commentList">
 						<div class="comment">
-							<a href="review">
+							<!-- Reviewer image. -->
+							<a href="{% url 'user_profile' review.reviewer.id %}">
 								<img class="avatar avatar--md"
-									src=""
+									src="{{ review.reviewer.image.url }}"
 									alt="user" />
 							</a>
+							<!-- Reviewer name and that lead to the user profile. -->
 							<div class="comment__details">
-								<a href="" class="comment__author">Adarsh</a>
+								<a href="{% url 'user_profile' review.reviewer.id %}" class="comment__author">{{review.reviewer.first_name}} {{review.reviewer.last_name}}</a>
+								<!-- Comment on the Project. -->
 								<p class="comment__info">
-									Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit alias numquam
-									perferendis
-									mollitia minus minima exercitationem possimus ab deserunt qui, soluta iusto
-									doloribus eveniet
-									similique consequuntur ratione, dignissimos ut magni laborum quo.
+									{{ review.review_body|linebreaksbr }}
 								</p>
 							</div>
 						</div>
 					</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>

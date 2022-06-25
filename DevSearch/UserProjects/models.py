@@ -19,6 +19,7 @@ class ProjectsModel(models.Model):
 	# ManyToMany Relationship with the skills model.
 	project_skills = models.ManyToManyField(SkillsModel)
 	project_image = models.ImageField(upload_to='Images/Project/ProjectImagesUser/', blank=True, default='Images/Project/default.jpg')
+	project_reviews = models.ManyToManyField('ProjectReviewModel', blank=True)
 	total_votes = models.IntegerField(default=0, null=True, blank=True)
 	vote_ratio = models.IntegerField(default=0, null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
@@ -32,10 +33,10 @@ class ProjectsModel(models.Model):
 class ProjectReviewModel(models.Model):
 	# Can only vote wither up or down.
 	# Shown name will be either "Up Vote" or "Down Vote"
-	VOTE = (
+	VOTE = [
 		('up', 'Up Vote'),
 		('down', 'Down Vote'),
-	)
+	]
 	# One to Many relationship with project and user profile.
 	# One user can only vote once for one project.
 	# One project can have multiple reviews.
@@ -45,9 +46,12 @@ class ProjectReviewModel(models.Model):
 	project = models.ForeignKey(ProjectsModel, on_delete=models.CASCADE)
 	review_body = models.TextField(null=True, blank=True)
 	# value have choice of up or down.
-	value = models.CharField(max_length=100, null=True, blank=True, choices=VOTE)
+	value = models.CharField(max_length=100, choices=VOTE)
 	created_at = models.DateTimeField(auto_now_add=True)
 	id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, unique=True)
+
+	class Meta:
+		unique_together = ('reviewer', 'project')
 
 	# Show name of the review as the object name.
 	def __str__(self):
