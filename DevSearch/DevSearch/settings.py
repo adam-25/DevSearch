@@ -108,6 +108,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Adding settings of the email.
+EMAIL_BACKEND = env('EMAIL_BACKEND')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_PORT = env('EMAIL_PORT')
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = env('EMAIL_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_PASSWORD')
+
 # STATIC FILES ARE IN static folder.
 STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'static'),

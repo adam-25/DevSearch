@@ -17,8 +17,8 @@ class UserProfileModel(models.Model):
 	user = models.OneToOneField(User, on_delete=models.CASCADE)
 	first_name = models.CharField(max_length=100)
 	last_name = models.CharField(max_length=100)
-	username = models.CharField(max_length=100)
-	user_email = models.EmailField(max_length=200)
+	username = models.CharField(max_length=100, unique=True)
+	user_email = models.EmailField(max_length=200, unique=True)
 	profession = models.CharField(max_length=200)
 	location = models.CharField(max_length=300, blank=True, null=True)
 
