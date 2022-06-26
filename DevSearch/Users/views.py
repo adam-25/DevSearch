@@ -50,13 +50,18 @@ def userProfile(request, user_id):
 	# Get all the projects of the user.
 	projects = ProjectsModel.objects.filter(project_owner=user_id)
 
+	if request.user.is_authenticated:
+		logged_in_profile = UserProfileModel.objects.get(user=request.user)
+	else:
+		logged_in_profile = None
+
 	# Getting skills with the description is not None. Exclude those skills.
 	topSkills = user.skills.exclude(description__exact='')
 	# Get other skills of user which description is None.
 	otherSkills = user.skills.filter(description='')
 	
 	# Render html page of specific user depend on the user id.
-	return render(request, 'Users/UserProfile/userProfile.html', {'user': user, 'projects': projects, 'topSkills': topSkills, 'otherSkills': otherSkills})
+	return render(request, 'Users/UserProfile/userProfile.html', {'user': user, 'projects': projects, 'topSkills': topSkills, 'otherSkills': otherSkills, 'logged_in_profile': logged_in_profile})
 
 # Login user.
 def loginUser(request):
@@ -390,3 +395,76 @@ def delete_skill(request, skill_id):
 		return redirect('user_account')
 	else:
 		return render(request, 'Projects/ConfirmationPage/deleteTemplate.html', {'project': skill})
+
+# Inbox of the user to check messages.
+@login_required(login_url='user_login')
+def inbox(request):
+
+	# Get logged in user.
+	profile = UserProfileModel.objects.get(user=request.user)
+
+	# Get all messages for the user.
+	chatMessages = MessagesModel.objects.filter(receiver=profile)
+
+	# Get unread and read messages.
+	unread_messages = MessagesModel.objects.filter(receiver=profile, read_message=False).count()
+	old_messages = MessagesModel.objects.filter(receiver=profile, read_message=True).count()
+
+	# Get sent messages.
+	sent_messages = MessagesModel.objects.filter(sender=profile)
+
+	return render(request, 'Users/Messages/inbox.html', {'chatMessages': chatMessages, 'unread_messages': unread_messages, 'old_messages': old_messages, 'sent_messages': sent_messages})
+
+
+# View Specific message.
+@login_required(login_url='user_login')
+def specific_message(request, message_id):
+	
+	# Get message and profile depend upon id and logged in user respectively.
+	specific_message = MessagesModel.objects.get(id=message_id)
+	profile = UserProfileModel.objects.get(user=request.user)
+
+	# If profile does not match with receiver or sender then display a message.
+	if profile != specific_message.receiver and profile != specific_message.sender:
+		messages.error(request, 'You are not allowed to view this message.')
+		return redirect('inbox')
+
+	# If message is read then set it to read.
+	if specific_message.read_message == False:
+		specific_message.read_message = True
+		specific_message.save()
+
+	# if profile is the sender then sent is True. else sent is False.
+	if specific_message.sender == profile:
+		return render(request, 'Users/Messages/specificMessage.html', {'specific_message': specific_message, 'profile': profile, 'sent': True})
+	else:
+		return render(request, 'Users/Messages/specificMessage.html', {'specific_message': specific_message, 'profile': profile, 'sent': False})
+
+
+# Send message to another user.
+@login_required(login_url='user_login')
+def send_message(request, user_id):
+
+	# get logged in user and receiver of the message.
+	profile = UserProfileModel.objects.get(user=request.user)
+	receiver_profile = UserProfileModel.objects.get(id=user_id)
+
+	# Form to send message.
+	form = SendMessages(profile, receiver_profile)
+
+	if request.method == 'POST':
+		form = SendMessages(profile, receiver_profile, request.POST)
+
+		# If form is valid then save the form.
+		if form.is_valid():
+			form.save()
+			messages.success(request, 'Message has been sent successfully.')
+			return redirect('inbox')
+		else:
+			# If form is not valid then display a message.
+			for field in form.errors:
+				messages.error(request, field)
+			
+			return redirect('send_message', user_id)
+
+	return render(request, 'Users/Messages/sendMessage.html', {'form': form, 'profile': receiver_profile})

@@ -1,0 +1,33 @@
+<!-- Extending main html file. -->
+{% extends '../../Main/main.html' %}
+
+{% block content %}
+<main class="messagePage my-xl">
+	<div class="content-box">
+		<div class="message">
+			<a class="backButton" href="{% url 'inbox' %}"><i class="im im-angle-left"></i></a>
+			<!-- Subject of the message. -->
+			<h2 class="message__subject">{{specific_message.subject}}</h4>
+				<!-- If you receive message, show the sender info. -->
+				{% if sent == False %}
+				<p>From: <a href="{% url 'user_profile' specific_message.sender.id %}" class="message__author">{{specific_message.sender}}</a></p>
+				<p>Email: {{specific_message.sender.user_email}}</p>
+				{% else %}
+				<!-- If you send a message, show the receiver info. -->
+				<p>To: <a href="{% url 'user_profile' specific_message.receiver.id %}" class="message__author">{{specific_message.receiver}}</a></p>
+				<p>Email: {{specific_message.receiver.user_email}}</p>
+				{% endif %}
+				<!-- Show message. -->
+				<p class="message__date">{{specific_message.created_at}}</p>
+				<div class="message__body">
+					{{specific_message.message|linebreaksbr}}
+				</div>
+		</div>
+		<!-- If you receive message, show reply button. -->
+		{% if sent == False %}
+			<a href="{% url 'send_message' specific_message.sender.id %}"><input class="btn btn--sub btn--lg  my-md" type="submit" value="Reply" /></a>
+		{% endif %}
+	</div>
+</main>
+
+{% endblock %}

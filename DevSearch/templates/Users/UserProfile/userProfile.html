@@ -52,7 +52,17 @@
 							</li>
 							{% endif %}
 						</ul>
-						<a href="message" class="btn btn--sub btn--lg">Send Message </a>
+
+						<!-- If user logged and viewing other user profile, show button to send message.  -->
+						{% if logged_in_profile != None %}
+						{% if logged_in_profile != user %}
+							<a href="{% url 'send_message' user.id %}" class="btn btn--sub btn--lg">Send Message </a>
+						{% else %}
+							<p>You cannot send a Message to yourself.</p>
+						{% endif %}
+						{% else %}
+							<p><a href="{% url 'user_login' %}">Log in</a> to Send a Message to {{user}}</p>
+						{% endif %}
 					</div>
 				</div>
 			</div>

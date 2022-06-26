@@ -25,4 +25,11 @@ urlpatterns = [
 	path('user/edit/other_skill/<str:skill_id>', views.edit_other_skill, name='edit_other_skill'),
 	# User to delete their skill.
 	path('user/delete/skill/<str:skill_id>', views.delete_skill, name='delete_skill'),
+
+	# User check inbox and particular message depending upon id.
+	path('user/inbox', views.inbox, name='inbox'),
+	path('user/inbox/message/<str:message_id>', views.specific_message, name='specific_message'),
+
+	# User send message to another user depending upon another user id.
+	path('user/send_message/<str:user_id>', views.send_message, name='send_message'),
 ]

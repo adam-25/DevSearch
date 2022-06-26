@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from .models import SkillsModel, UserProfileModel
+from .models import *
 
 # Form for user to signup.
 class SignUpForm(UserCreationForm):
@@ -80,3 +80,26 @@ class AddOtherSkillForm(forms.ModelForm):
 
 		for field in self.fields.values():
 			field.widget.attrs.update({'class': 'input', 'placeholder': field.label, 'autocomplete': 'off', 'required': True})
+
+# Form to send a message to a user.
+class SendMessages(forms.ModelForm):
+	class Meta:
+		model = MessagesModel
+		fields = ['sender', 'receiver', 'subject', 'message']
+
+	# Hiding the sender, receiver field.
+	# Set the initial value of sender to the current user.
+	# Set the initial value of receiver to the user who is being messaged.
+	def __init__(self, user, receiver, *args, **kwargs):
+		super(SendMessages, self).__init__(*args, **kwargs)
+		self.fields['sender'].initial = user
+		self.fields['sender'].widget = forms.HiddenInput()
+		self.fields['sender'].label = ''
+
+		self.fields['receiver'].initial = receiver
+		self.fields['receiver'].widget = forms.HiddenInput()
+		self.fields['receiver'].label = ''
+
+
+		for field in self.fields.values():
+			field.widget.attrs.update({'class': 'input', 'placeholder': field.label, 'autocomplete': 'off', 'required': True, 'style': 'margin-bottom: 20px'})

@@ -1,0 +1,78 @@
+<!-- Extending main html file. -->
+{% extends '../../Main/main.html' %}
+
+{% block content %}
+
+<main class="inbox my-xl">
+	<div class="content-box">
+
+		<!-- If there is no messages then so No messages. -->
+		{% if unread_messages == 0 and old_messages == 0 and sent_messages.count == 0 %}
+		<div class="noMessages">
+			<h2>No messages</h2>
+			<p>You have no messages in your inbox.</p>
+		</div>
+		{% endif %}
+
+		<!-- If there are more than 0 unread messages then show messages. -->
+		{% if unread_messages > 0 %}
+		<h3 class="inbox__title">New Messages(<span>{{unread_messages}}</span>)</h3>
+		<ul class="messages">
+			<!-- Loop through unread messages. -->
+			{% for message in chatMessages %}
+			{% if message.read_message == False %}
+			<li class="message message--unread">
+				<a href="{% url 'specific_message' message.id %}">
+					<span class="message__author">{{message.sender}}</span>
+					<span class="message__subject">{{message.subject}}</span>
+					<span class="message__date">{{message.created_at}}</span>
+				</a>
+			</li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+		<!-- If there are read messages then show it. -->
+		{% if old_messages > 0 %}
+		{% if unread_messages > 0 %}
+		<div style="margin-top: 10%;"></div>
+		{% endif %}
+		<h3 class="inbox__title">Old Messages(<span>{{old_messages}}</span>)</h3>
+		<ul class="messages">
+			<!-- Loop through read messages. -->
+			{% for message in chatMessages %}
+			{% if message.read_message == True %}
+			<li class="message">
+				<a href="{% url 'specific_message' message.id %}">
+					<span class="message__author">{{message.sender}}</span>
+					<span class="message__subject">{{message.subject}}</span>
+					<span class="message__date">{{message.created_at}}</span>
+				</a>
+			</li>
+			{% endif %}
+			{% endfor %}
+		</ul>
+		{% endif %}
+
+		<!-- If there are any messages that you have send then show it. -->
+		{% if sent_messages.count > 0 %}
+		<div style="margin-top: 10%;"></div>
+		<h3 class="inbox__title">Sent Messages(<span>{{sent_messages.count}}</span>)</h3>
+		<ul class="messages">
+			<!-- Loop through sent messages. -->
+			{% for message in sent_messages %}
+			<li class="message">
+				<a href="{% url 'specific_message' message.id %}">
+					<span class="message__author">{{message.receiver}}</span>
+					<span class="message__subject">{{message.subject}}</span>
+					<span class="message__date">{{message.created_at}}</span>
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</div>
+</main>
+
+{% endblock %}

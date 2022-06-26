@@ -20,7 +20,8 @@
 				<li class="header__menuItem"><a href="{% url 'projects' %}">Projects</a></li>
 				<!-- Checking if current user is logged in or not. -->
 				{% if request.user.is_authenticated %}
-				<li class="header__menuItem"><a href="">Inbox</a></li>
+				<!-- If user logged in then show Inbox url -->
+				<li class="header__menuItem"><a href="{% url 'inbox' %}">Inbox</a></li>
 				<li class="header__menuItem"><a href="{% url 'user_account' %}">My Account</a></li>
 				<!-- If user is logged in then show Logout button and redirect to url named user_logout in views. -->
 				<li class="header__menuItem"><a href="{% url 'user_logout' %}" class="btn btn--sub">Logout</a></li>

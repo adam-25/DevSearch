@@ -1,0 +1,30 @@
+<!-- Extending main html file. -->
+{% extends '../../Main/main.html' %}
+
+{% block content %}
+
+<main class="formPage my-xl">
+	<div class="content-box">
+		<div class="formWrapper">
+			<!-- back-button -->
+			<a class="backButton" href="{% url 'user_profile' profile.id %}"><i class="im im-angle-left"></i></a>
+			<br>
+
+			<!-- Form to send a message. -->
+			<form class="form" method="POST">
+				<h2>Message</h2>
+				<!-- Input:Text -->
+				{% csrf_token %}
+				<div class="form__field">
+					{% for field in form %}
+					<label for="formInput#text">{{field.label}}</label>
+					{{field}}
+					{% endfor %}
+				</div>
+				<input class="btn btn--sub btn--lg  my-md" type="submit" value="Send" />
+			</form>
+		</div>
+	</div>
+</main>
+
+{% endblock %}
