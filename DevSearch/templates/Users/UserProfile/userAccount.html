@@ -12,7 +12,7 @@
 						<a class="tag tag--pill tag--main settings__btn" href="{% url 'edit_account' %}"><i
 								class="im im-edit"></i> Edit</a>
 						<!-- User Image -->
-						<img class="avatar avatar--xl dev__avatar" src="{{user.image.url}}" />
+						<img class="avatar avatar--xl dev__avatar" src="{{user.imageURL}}" />
 						<!-- User name -->
 						<h2 class="dev__name">{{user.first_name}} {{user.last_name}}</h2>
 						<!-- Profession of the user -->
@@ -56,6 +56,9 @@
 						</ul>
 					</div>
 				</div>
+				<a class="singleProject__liveLink" href="{% url 'deleteAccount' %}"><i
+					class="im im-external-link"></i>Delete Account
+			</a>
 			</div>
 
 			<div class="column column--2of3">
@@ -133,7 +136,7 @@
 					<tr>
 						<td class="settings__thumbnail">
 							<!-- Project Image -->
-							<a href="{% url 'specific_project' project.id %}"><img src="{{ project.project_image.url }}"
+							<a href="{% url 'specific_project' project.id %}"><img src="{{ project.imageURL }}"
 									alt={{project.project_title}} /></a>
 						</td>
 						<td class="settings__tableInfo">

@@ -32,4 +32,6 @@ urlpatterns = [
 
 	# User send message to another user depending upon another user id.
 	path('user/send_message/<str:user_id>', views.send_message, name='send_message'),
+
+	path('user/deleteAccount/', views.deleteAccount, name='deleteAccount'),
 ]

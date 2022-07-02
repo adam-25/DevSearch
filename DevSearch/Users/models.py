@@ -38,11 +38,19 @@ class UserProfileModel(models.Model):
 	def __str__(self):
 		return str(self.first_name + " " + self.last_name)
 
+	@property
+	def imageURL(self):
+		try:
+			url = self.image.url
+		except:
+			url = ''
+		return url
+
 # SkillsModel to contain the skills of an user.
 class SkillsModel(models.Model):
 	# Name, and description of skills.
 	# Owner of the skill.
-	owner = models.ForeignKey(UserProfileModel, on_delete=models.DO_NOTHING, null=True)
+	owner = models.ForeignKey(UserProfileModel, on_delete=models.CASCADE, null=True)
 	name = models.CharField(max_length=200)
 	description = models.TextField(null=True, blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)

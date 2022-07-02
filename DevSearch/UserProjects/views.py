@@ -121,10 +121,10 @@ def create_project(request):
 			return redirect('user_account')
 		else:
 			# If form is not valid then render the form with error messages.
-			for i in form.errors.values():
-				messages.error(request, i)
+			for field in form.errors:
+				messages.error(request, field)
 			
-			redirect('create_project')
+			return redirect('create_project')
 
 	# Otherwise render the empty form.
 	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form, 'create': True})
@@ -161,10 +161,10 @@ def update_project(request, project_id):
 			return redirect('user_account')
 		else:
 			# If form is not valid then render the form with error messages.
-			for i in form.errors.values():
-				messages.error(request, i)
+			for field in form.errors:
+				messages.error(request, field)
 			
-			redirect('update_project', project_id)
+			return redirect('update_project', project_id)
 	
 	# Otherwise render the empty form.
 	return render(request, 'Projects/ProjectForm/projectForm.html', {'form': form, 'create': False})

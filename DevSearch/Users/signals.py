@@ -45,8 +45,11 @@ def createProfile(sender, instance, created, **kwargs):
 def deleteUser(sender, instance, **kwargs):
 	# Get user from profile model.
 	# Delete user.
-	user = instance.user
-	user.delete()
+	try:
+		user = instance.user
+		user.delete()
+	except:
+		pass
 
 
 # When add new skill then it also apply to the owner of the skill.
@@ -68,14 +71,17 @@ def addSkillToUserProfile(sender, instance, **kwargs):
 # When delete skill then it also apply to the owner of the skill.
 @receiver(post_delete, sender=SkillsModel)
 def deleteSkillUserProfile(sender, instance, **kwargs):
-	# Skills Model
-	skill = instance
+	try:
+		# Skills Model
+		skill = instance
 
-	# Get user profile depend on the owner of the skill.
-	user_profile = skill.owner
+		# Get user profile depend on the owner of the skill.
+		user_profile = skill.owner
 
-	# Delete skill from user profile.
-	user_profile.skills.remove(skill)
+		# Delete skill from user profile.
+		user_profile.skills.remove(skill)
 
-	# Save the user profile.
-	user_profile.save()
+		# Save the user profile.
+		user_profile.save()
+	except:
+		pass

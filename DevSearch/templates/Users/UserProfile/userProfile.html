@@ -10,7 +10,7 @@
 				<div class="card text-center">
 					<div class="card__body dev">
 						<!-- User Image -->
-						<img class="avatar avatar--xl" src="{{ user.image.url }}" />
+						<img class="avatar avatar--xl" src="{{ user.imageURL }}" />
 						<!-- User name -->
 						<h2 class="dev__name">{{user.first_name}} {{user.last_name}}</h2>
 						<!-- User profession -->
@@ -114,7 +114,7 @@
 								<!-- Project card redirects to the specific project. -->
 								<a href="{% url 'specific_project' project.id %}" class="project">
 									<!-- Project Image -->
-									<img class="project__thumbnail" src="{{project.project_image.url}}"
+									<img class="project__thumbnail" src="{{project.imageURL}}"
 										alt="{{project.project_title}}" />
 									<div class="card__body">
 										<!-- Project title and owner -->

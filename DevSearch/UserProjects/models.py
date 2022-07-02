@@ -28,6 +28,16 @@ class ProjectsModel(models.Model):
 	# Show name of the project as the object name.
 	def __str__(self):
 		return self.project_title
+	
+	# Get the image url of the project.
+	# property to use imageURL method as static.
+	@property
+	def imageURL(self):
+		try:
+			url = self.project_image.url
+		except:
+			url = ''
+		return url
 
 # Review Model to store the reviews of the project.
 class ProjectReviewModel(models.Model):

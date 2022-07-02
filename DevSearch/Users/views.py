@@ -468,3 +468,16 @@ def send_message(request, user_id):
 			return redirect('send_message', user_id)
 
 	return render(request, 'Users/Messages/sendMessage.html', {'form': form, 'profile': receiver_profile})
+
+@login_required(login_url='user_login')
+def deleteAccount(request):
+	
+	# Get logged in user.
+	profile = UserProfileModel.objects.get(user=request.user)
+
+	# If request method is post then delete the user.
+	if request.method == 'POST':
+		profile.user.delete()
+		return redirect('user_login')
+
+	return render(request, 'Projects/ConfirmationPage/deleteTemplate.html', {'project': "your Account"})
