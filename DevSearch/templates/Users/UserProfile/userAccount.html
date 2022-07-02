@@ -56,6 +56,7 @@
 						</ul>
 					</div>
 				</div>
+				<br>
 				<a class="singleProject__liveLink" href="{% url 'deleteAccount' %}"><i
 					class="im im-external-link"></i>Delete Account
 			</a>
@@ -123,6 +124,9 @@
 				</table>
 
 				<!-- Projects heading -->
+				{% if not topSkills and not otherSkills %}
+				<p>Create new Skills to your profile to Create a Project.</p>
+				{% else %}
 				<div class="settings">
 					<h3 class="settings__title">Projects</h3>
 					<a class="tag tag--pill tag--sub settings__btn tag--lg" href="{% url 'create_project' %}"><i
@@ -158,6 +162,7 @@
 					</tr>
 					{% endfor %}
 				</table>
+				{% endif %}
 			</div>
 		</div>
 	</div>

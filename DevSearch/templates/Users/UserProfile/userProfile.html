@@ -105,7 +105,9 @@
 				<!-- Users project -->
 				<div class="devInfo">
 					<!-- Title -->
+					{% if projects %}
 					<h3 class="devInfo__title">Projects</h3>
+					{% endif %}
 					<div class="grid grid--two">
 						<!-- Loop through all the projects of user. -->
 						{% for project in projects %}

@@ -43,7 +43,7 @@ class UserProfileModel(models.Model):
 		try:
 			url = self.image.url
 		except:
-			url = ''
+			url = "Images/User/user.png"
 		return url
 
 # SkillsModel to contain the skills of an user.

@@ -12,6 +12,8 @@ media
 
 /DevSearch/static/Images/Project/ProjectImagesUser/
 /DevSearch/static/Images/User/UserImages/
+/DevSearch/staticfiles/Images/Project/ProjectImagesUser/
+/DevSearch/staticfiles/Images/User/UserImages/
 /DevSearch/Users/migrations/
 /DevSearch/UserProjects/migrations/
 # If you are using PyCharm # 

@@ -46,6 +46,8 @@ def deleteUser(sender, instance, **kwargs):
 	# Get user from profile model.
 	# Delete user.
 	try:
+		user_profile = instance
+		user_profile.image.delete(save=False)
 		user = instance.user
 		user.delete()
 	except:

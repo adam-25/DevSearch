@@ -36,7 +36,7 @@ class ProjectsModel(models.Model):
 		try:
 			url = self.project_image.url
 		except:
-			url = ''
+			url = "Images/Project/default.jpg"
 		return url
 
 # Review Model to store the reviews of the project.

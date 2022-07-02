@@ -29,7 +29,7 @@ def allUsers(request):
 		Q(first_name__icontains=search) 
 		| Q(last_name__icontains=search) 
 		| Q(skills__name__icontains=search) 
-		| Q(profession__icontains=search))
+		| Q(profession__icontains=search)).order_by('-created_at')
 
 	# Pagination
 	users, custom_range, p, page = pagination(request, users)
