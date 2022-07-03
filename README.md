@@ -3,23 +3,25 @@
 Created a application which can be used by the Developers to upload their profiles and show their skills and projects they worked on. There are two main parts of the application.
 
 ```
-  1). Developers can Upload their profiles with the projects and skills.
-  2). Employers can watch their profiles and projects they worked on and can communicate with them with messages.
+  1. Developers can Upload their profiles with the projects and skills.
+  2. Employers can watch their profiles and projects they worked on and can communicate with them with messages.
 ```
 
 ## Download Python and pgAdmin 4
 
-  &emsp; 1). Download and setup Python from <a href="https://www.python.org/downloads/" target="_blank">here</a>.<br/>
-  &emsp; 2). Download pgAdmin 4 which used to setup Postgresql DB from <a href="https://www.pgadmin.org/download/" target="_blank">here</a>.<br/>
-  &emsp; 3). Download Postgresql from <a href="https://www.postgresql.org/download/" target="_blank">here</a>.
+  &emsp; 1. Download and setup Python from <a href="https://www.python.org/downloads/" target="_blank">here</a>.<br/>
+  &emsp; 2. Download pgAdmin 4 which used to setup Postgresql DB from <a href="https://www.pgadmin.org/download/" target="_blank">here</a>.<br/>
+  &emsp; 3. Download Postgresql from <a href="https://www.postgresql.org/download/" target="_blank">here</a>.
   
-## Setup AWS Account with RDS and S3 bucket
+## Setup AWS Account with RDS an S3 bucket
 
 ### Setup AWS Account
 
-  &emsp; 1). You need to setup AWS Account to upload developer profile images and project title images to AWS S3 bucket and to connect DB with AWS RDS. Check tutorial to setup AWS root account from <a href="https://www.youtube.com/watch?v=FRQ9fE4fd5g" target="_blank">here</a>.</br>
-  &emsp; 2). Setup IAM User with the help of <a href="https://www.youtube.com/watch?v=wRzzBb18qUw" target="_blank">this </a>tutorial.</br>
-  &emsp; 3). When Setting up IAM user permission attach policy named ```AmazonS3FullAccess``` as well.
+<ul>
+  <li>You need to setup AWS Account to upload developer profile images and project title images to AWS S3 bucket and to connect DB with AWS RDS. Check tutorial to setup AWS root account from <a href="https://www.youtube.com/watch?v=FRQ9fE4fd5g" target="_blank">here</a>.</li>
+  <li>Setup IAM User with the help of <a href="https://www.youtube.com/watch?v=wRzzBb18qUw" target="_blank">this </a>tutorial.</li>
+  <li>When Setting up IAM user permission attach policy named "AmazonS3FullAccess" as well.</li>
+</ul>
 
 ### Setup RDS Database on AWS
 
@@ -41,10 +43,12 @@ Created a application which can be used by the Developers to upload their profil
 
 ### Setup S3 bucket on AWS
 
-  &emsp; Search S3 and create S3 bucket. <br/>
-  &emsp; Follow the steps and uncheck Block all public access.<br/>
-  &emsp; Create S3 bucket. <br/>
-  &emsp; After Successfully creating S3 bucket, go to permissions -> Edit Bucket policy.
+<ul>
+  <li>Search S3 and create S3 bucket.</li>
+  <li>Follow the steps and uncheck Block all public access</li>
+  <li>Create S3 bucket.</li>
+  <li>After Successfully creating S3 bucket, go to permissions -> Edit Bucket policy.</li>
+</ul>
   
   ```
     Add Following bucket policy and Save Changes.
@@ -58,7 +62,7 @@ Created a application which can be used by the Developers to upload their profil
             "Effect": "Allow",
             "Principal": "*",
             "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::devsearch-project-bucket/*"
+            "Resource": "arn:aws:s3:::${name_of_your_bucket}/*"
         }
       ]
     }
@@ -67,29 +71,34 @@ Created a application which can be used by the Developers to upload their profil
   
 ## Setup PostgreSQL server
 
-  &emsp; 1). Open pgAdmin 4 and Register new Server into Servers group.
-  &emsp; 2). Give name to the Server and go to Connection.
+  &emsp; 1. Open pgAdmin 4 and Register new Server into Servers group.</br>
+  &emsp; 2. Give name to the Server and go to Connection.
+
   ```
-      Information in Connection.
+    Information in Connection.
       
       - Host name/address -> Go to RDS and Copy the Endpoint of Database that we created.
       - Username          -> (AWS Database username)
       - password          -> (AWS Database password)
   ```
-  &emsp; 3). Create a Database in Server with the name of your choice.
+  
+  &emsp; 3. Create a Database in Server with the name of your choice.
   
 ## Clone the Repo and Setup Environment Variables
 
-  &emsp; 1). Open Terminal and Install virtual environment with ```pip install virtualenv``` or ``` pip3 install virtualenv``` or ```python3 -n pip install virtualenv```.<br/>
-  &emsp; 2). Clone the Repo.<br/>
-  &emsp; 3). cd to the root directory of the repo.
-  &emsp; 4). Start Virtual environment with ```virtualenv venv``` and then ```source venv/bin/activate```.
-  &emsp; 5). After that cd to the Folder DevSearch with the command ```cd DevSearch/DevSearch```.
-  
+<ol>
+  <li>Open Terminal and Install virtual environment with "pip install virtualenv" or "pip3 install virtualenv" or "python3 -n pip install virtualenv".</li>
+  <li>Clone the Repo.</li>
+  <li>cd to the root directory of the repo.</li>
+  <li>Start Virtual environment with "virtualenv venv" and then "source venv/bin/activate".</li>
+  <li>After that cd to the Folder DevSearch with the command "cd DevSearch/DevSearch".</li>
+
+</ol>
+
 ### Setup Environment Variables
 
-  &emsp; Create file ```.env```
-  &emsp; Go to .env file and write below variables.
+  &emsp; 1. Create file ```.env```<br/>
+  &emsp; 2. Go to .env file and write below variables.
   
   ```
      SECRET_KEY=(any string you like to enter)
@@ -111,13 +120,13 @@ Created a application which can be used by the Developers to upload their profil
 
 ## Instruction to Run Local Application
 
-Go to the Root Folder of the Project where ```manage.py``` and ```requirements.txt``` files are located.
-<ul><li>Run following Commands to run your application locally.</li></ul>
+&emsp;  1. Go to the Root Folder of the Project where ```manage.py``` and ```requirements.txt``` files are located.<br/>
+&emsp;  2. Run following Commands to run your application locally.
 ```
-    pip install -r requirements.txt
-    python manage.py makemigrations
-    python manage.py migrate
-    python manage.py runserver
+  pip install -r requirements.txt
+  python manage.py makemigrations
+  python manage.py migrate
+  python manage.py runserver
 ```
 
-This will run your application on this URL: http://127.0.0.1:8000/
+**This will run your application on this URL: http://127.0.0.1:8000/**
