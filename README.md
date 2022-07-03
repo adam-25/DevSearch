@@ -1,10 +1,10 @@
 # DevSearch
 
-Created a application which can be used by the Developers to upload their profiles and show their skills and projects they worked on. There are two main parts of the application.
+Created a web application which can be used by the Developers to upload their profiles and show their skills and projects they worked on. There are two main parts of the application.
 
 ```
   1. Developers can Upload their profiles with the projects and skills.
-  2. Employers can watch their profiles and projects they worked on and can communicate with them with messages.
+  2. Employers can watch their profiles and projects they worked on and can communicate with them through messages.
 ```
 
 ## Download Python and pgAdmin 4
@@ -20,7 +20,7 @@ Created a application which can be used by the Developers to upload their profil
 <ul>
   <li>You need to setup AWS Account to upload developer profile images and project title images to AWS S3 bucket and to connect DB with AWS RDS. Check tutorial to setup AWS root account from <a href="https://www.youtube.com/watch?v=FRQ9fE4fd5g" target="_blank">here</a>.</li>
   <li>Setup IAM User with the help of <a href="https://www.youtube.com/watch?v=wRzzBb18qUw" target="_blank">this </a>tutorial.</li>
-  <li>When Setting up IAM user permission attach policy named "AmazonS3FullAccess" as well.</li>
+  <li><b>When Setting up IAM user permission attach policy named "AmazonS3FullAccess" as well.</b></li>
 </ul>
 
 ### Setup RDS Database on AWS
@@ -37,21 +37,21 @@ Created a application which can be used by the Developers to upload their profil
     - password                          -> (password you want to set)
     - Instance                          -> db.t3.micro
     - Public access                     -> Yes
-    - Create or Select Security group which has inbound rules Type HTTP and source from 0.0.0.0/0
+    - Create or Select Security group which has inbound rules Type HTTP, HTTPS and source from 0.0.0.0/0
     - Select Additional Configuration according to your usage of DB.
 ```
 
 ### Setup S3 bucket on AWS
 
 <ul>
-  <li>Search S3 and create S3 bucket.</li>
-  <li>Follow the steps and uncheck Block all public access</li>
+  <li>Search S3 and create it on AWS.</li>
+  <li>Follow the steps and uncheck Block all public access.</li>
   <li>Create S3 bucket.</li>
   <li>After Successfully creating S3 bucket, go to permissions -> Edit Bucket policy.</li>
 </ul>
   
   ```
-    Add Following bucket policy and Save Changes.
+    Add following bucket policy and Save Changes.
     
     {
       "Version": "2012-10-17",
@@ -77,7 +77,7 @@ Created a application which can be used by the Developers to upload their profil
   ```
     Information in Connection.
       
-      - Host name/address -> Go to RDS and Copy the Endpoint of Database that we created.
+      - Host name/address -> Go to RDS Database that we created and copy the EndPoint and Paste it here.
       - Username          -> (AWS Database username)
       - password          -> (AWS Database password)
   ```
@@ -90,7 +90,7 @@ Created a application which can be used by the Developers to upload their profil
   <li>Open Terminal and Install virtual environment with "pip install virtualenv" or "pip3 install virtualenv" or "python3 -n pip install virtualenv".</li>
   <li>Clone the Repo.</li>
   <li>cd to the root directory of the repo.</li>
-  <li>Start Virtual environment with "virtualenv venv" and then "source venv/bin/activate".</li>
+  <li>Start Virtual environment with "virtualenv venv" and then activate it with command "source venv/bin/activate".</li>
   <li>After that cd to the Folder DevSearch with the command "cd DevSearch/DevSearch".</li>
 
 </ol>
@@ -118,7 +118,7 @@ Created a application which can be used by the Developers to upload their profil
      AWS_S3_REGION_NAME=(Name of your S3 bucket region)
   ```
 
-## Instruction to Run Local Application
+## Instruction to run local Application
 
 &emsp;  1. Go to the Root Folder of the Project where ```manage.py``` and ```requirements.txt``` files are located.<br/>
 &emsp;  2. Run following Commands to run your application locally.
