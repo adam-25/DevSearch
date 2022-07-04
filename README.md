@@ -48,6 +48,7 @@ Created a web application which can be used by the Developers to upload their pr
   <li>Follow the steps and uncheck Block all public access.</li>
   <li>Create S3 bucket.</li>
   <li>After Successfully creating S3 bucket, go to permissions -> Edit Bucket policy.</li>
+  <li>After that add Images folder into static folder to AWS S3 bucket to get better experience.</li>
 </ul>
   
   ```
