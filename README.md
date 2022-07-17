@@ -1,6 +1,6 @@
 # DevSearch
 
-Created a web application which can be used by the Developers to upload their profiles and show their skills and projects they worked on. There are two main parts of the application.
+> Created a web application which can be used by the Developers to upload their profiles and show their skills and projects they worked on. There are two main parts of the application.
 
 ```
   1. Developers can Upload their profiles with the projects and skills.
@@ -9,9 +9,11 @@ Created a web application which can be used by the Developers to upload their pr
 
 ## Download Python and pgAdmin 4
 
-  &emsp; 1. Download and setup Python from <a href="https://www.python.org/downloads/" target="_blank">here</a>.<br/>
-  &emsp; 2. Download pgAdmin 4 which used to setup Postgresql DB from <a href="https://www.pgadmin.org/download/" target="_blank">here</a>.<br/>
-  &emsp; 3. Download Postgresql from <a href="https://www.postgresql.org/download/" target="_blank">here</a>.
+<ol>
+  <li>Download and setup Python from <a href="https://www.python.org/downloads/" target="_blank">here</a>. </li>
+  <li>Download pgAdmin 4 which used to setup Postgresql DB from <a href="https://www.pgadmin.org/download/" target="_blank">here</a>. </li>
+  <li>Download Postgresql from <a href="https://www.postgresql.org/download/" target="_blank">here</a>. </li>
+</ol>
   
 ## Setup AWS Account with RDS an S3 bucket
 
@@ -72,19 +74,21 @@ Created a web application which can be used by the Developers to upload their pr
   
 ## Setup PostgreSQL server
 
-  &emsp; 1. Open pgAdmin 4 and Register new Server into Servers group.</br>
-  &emsp; 2. Give name to the Server and go to Connection.
+<ol>
+ <li>Open pgAdmin 4 and Register new Server into Servers group. </li>
+ <li>Give name to the Server and go to Connection. </li>
 
-  ```
-    Information in Connection.
-      
-      - Host name/address -> Go to RDS Database that we created and copy the EndPoint and Paste it here.
-      - Username          -> (AWS Database username)
-      - password          -> (AWS Database password)
-  ```
+#### Information in Connection.
+| Label | Value |
+| --- | --- |
+| Host name/address | Go to RDS Database that we created and copy the EndPoint and Paste it here. |
+| Username | (AWS Database username) |
+| password | (AWS Database password) |
+
   
-  &emsp; 3. Create a Database in Server with the name of your choice.
-  
+  <li>Create a Database in Server with the name of your choice. </li>
+</ol>
+
 ## Clone the Repo and Setup Environment Variables
 
 <ol>
@@ -98,36 +102,42 @@ Created a web application which can be used by the Developers to upload their pr
 
 ### Setup Environment Variables
 
-  &emsp; 1. Create file ```.env```<br/>
-  &emsp; 2. Go to .env file and write below variables.
-  
-  ```
-     SECRET_KEY=(any string you like to enter)
-     EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
-     EMAIL_HOST=smtp.gmail.com
-     EMAIL_PORT=465
-     EMAIL_USER=(your email address)
-     EMAIL_PASSWORD=(your email password)
-     DB_NAME=(name of your database in pgAdmin 4 Server)
-     DB_USER=(username on AWS Database)
-     DB_PASSWORD=(AWS Database Password)
-     DB_HOST=(AWS Database Endpoint)
-     DB_PORT=5432
-     AWS_ACCESS_KEY_ID=(Your AWS IAM user Access key)
-     AWS_SECRET_ACCESS_KEY=(Your AWS IAM user secret key)
-     AWS_STORAGE_BUCKET_NAME=(Name of the S3 bucket)
-     AWS_S3_REGION_NAME=(Name of your S3 bucket region)
-  ```
+<ol>
+  <li>Create file ".env" </li>
+  <li>Go to .env file and write below variables. </li>
+</ol>
+
+| Variable Name | Value |
+| --- | --- |
+| SECRET_KEY | (any string you like to enter) |
+| EMAIL_BACKEND | django.core.mail.backends.smtp.EmailBackend |
+| EMAIL_HOST | smtp.gmail.com |
+| EMAIL_PORT | 465 |
+| EMAIL_USER | (your email address) |
+| EMAIL_PASSWORD | (your email password) |
+| DB_NAME | (name of your database in pgAdmin 4 Server) |
+| DB_USER | (username on AWS Database) |
+| DB_PASSWORD | (AWS Database Password) |
+| DB_HOST | (AWS Database Endpoint) |
+| DB_PORT | 5432 |
+| AWS_ACCESS_KEY_ID | (Your AWS IAM user Access key) |
+| AWS_SECRET_ACCESS_KEY | (Your AWS IAM user secret key) |
+| AWS_STORAGE_BUCKET_NAME | (Name of the S3 bucket) |
+| AWS_S3_REGION_NAME | (Name of your S3 bucket region) |
 
 ## Instruction to run local Application
 
 &emsp;  1. Go to the Root Folder of the Project where ```manage.py``` and ```requirements.txt``` files are located.<br/>
 &emsp;  2. Run following Commands to run your application locally.
-```
-  pip install -r requirements.txt
-  python manage.py makemigrations
-  python manage.py migrate
-  python manage.py runserver
+
+```bash
+  pip install -r requirements.txt  # This command will install all the required packages for project.
+  
+  python manage.py makemigrations  # This command will package all models into individual migration files.
+  
+  python manage.py migrate         # This command will apply all migration files to DB.
+  
+  python manage.py runserver       # This will start developement server locally.
 ```
 
 **This will run your application on this URL: http://127.0.0.1:8000/**
